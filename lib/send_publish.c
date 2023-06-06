@@ -182,7 +182,7 @@ int send__real_publish(struct mosquitto *mosq, uint16_t mid, const char *topic, 
 		return MOSQ_ERR_OVERSIZE_PACKET;
 	}
 
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->mid = mid;

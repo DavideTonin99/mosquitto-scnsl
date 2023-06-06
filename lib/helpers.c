@@ -41,7 +41,7 @@ struct userdata__simple {
 
 static void on_connect(struct mosquitto *mosq, void *obj, int rc)
 {
-	struct userdata__callback *userdata = obj;
+	struct userdata__callback *userdata =  (struct userdata__callback*) obj;
 
 	UNUSED(rc);
 
@@ -52,7 +52,7 @@ static void on_connect(struct mosquitto *mosq, void *obj, int rc)
 static void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
 {
 	int rc;
-	struct userdata__callback *userdata = obj;
+	struct userdata__callback *userdata = (struct userdata__callback*)obj;
 
 	rc = userdata->callback(mosq, userdata->userdata, message);
 	if(rc){
@@ -62,7 +62,7 @@ static void on_message_callback(struct mosquitto *mosq, void *obj, const struct 
 
 static int on_message_simple(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
 {
-	struct userdata__simple *userdata = obj;
+	struct userdata__simple *userdata = (struct userdata__simple*)obj;
 	int rc;
 
 	if(userdata->max_msg_count == 0){
@@ -114,7 +114,7 @@ libmosq_EXPORT int mosquitto_subscribe_simple(
 
 	*messages = NULL;
 
-	userdata.messages = calloc(sizeof(struct mosquitto_message), (size_t)msg_count);
+	userdata.messages =(struct mosquitto_message *) calloc(sizeof(struct mosquitto_message), (size_t)msg_count);
 	if(!userdata.messages){
 		return MOSQ_ERR_NOMEM;
 	}

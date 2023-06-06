@@ -120,7 +120,7 @@ int mosquitto_publish_v5(struct mosquitto *mosq, int *mid, const char *topic, in
 			rc = mosquitto_property_copy_all(&properties_copy, outgoing_properties);
 			if(rc) return rc;
 		}
-		message = mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
+		message = ((struct mosquitto_message_all *)mosquitto__calloc(1, sizeof(struct mosquitto_message_all)));
 		if(!message){
 			mosquitto_property_free_all(&properties_copy);
 			return MOSQ_ERR_NOMEM;

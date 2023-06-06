@@ -54,7 +54,7 @@ int send__disconnect(struct mosquitto *mosq, uint8_t reason_code, const mosquitt
 	log__printf(mosq, MOSQ_LOG_DEBUG, "Client %s sending DISCONNECT", SAFE_PRINT(mosq->id));
 #endif
 	assert(mosq);
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->command = CMD_DISCONNECT;

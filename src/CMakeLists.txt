@@ -72,6 +72,7 @@ set (MOSQ_SRCS
 	will_delay.c
 	../lib/will_mosq.c ../lib/will_mosq.h)
 
+set_source_files_properties(${MOSQ_SRCS} PROPERTIES LANGUAGE CXX)
 
 if (WITH_BUNDLED_DEPS)
 	include_directories(${mosquitto_SOURCE_DIR} ${mosquitto_SOURCE_DIR}/deps)

@@ -1,4 +1,7 @@
-set(shared_src client_shared.c client_shared.h client_props.c)
+set(SRC client_shared.c client_props.c)
+set_source_files_properties(${SRC} PROPERTIES LANGUAGE CXX)
+
+set(shared_src ${SRC} client_shared.h )
 
 if (WITH_SRV)
 	add_definitions("-DWITH_SRV")
@@ -18,6 +21,8 @@ endif()
 
 include_directories(${CLIENT_INC})
 link_directories(${CLIENT_DIR})
+
+set_source_files_properties(pub_client.c pub_shared.c sub_client.c sub_client_output.c rr_client.c pub_shared.c PROPERTIES LANGUAGE CXX)
 
 add_executable(mosquitto_pub pub_client.c pub_shared.c ${shared_src})
 add_executable(mosquitto_sub sub_client.c sub_client_output.c ${shared_src})

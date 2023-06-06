@@ -124,7 +124,7 @@ int send__command_with_mid(struct mosquitto *mosq, uint8_t command, uint16_t mid
 	int rc;
 
 	assert(mosq);
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->command = command;
@@ -170,7 +170,7 @@ int send__simple_command(struct mosquitto *mosq, uint8_t command)
 	int rc;
 
 	assert(mosq);
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->command = command;

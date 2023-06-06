@@ -60,7 +60,7 @@ int send__subscribe(struct mosquitto *mosq, int *mid, int topic_count, char *con
 		packetlen += 2U+(uint16_t)tlen + 1U;
 	}
 
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 

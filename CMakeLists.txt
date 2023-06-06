@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.1)
 cmake_policy(SET CMP0042 NEW)
 
-project(mosquitto)
+project(mosquitto CXX)
 set (VERSION 2.0.15)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
@@ -27,11 +27,11 @@ include(GNUInstallDirs)
 
 option(WITH_BUNDLED_DEPS "Build with bundled dependencies?" ON)
 option(WITH_TLS
-	"Include SSL/TLS support?" ON)
+	"Include SSL/TLS support?" OFF)
 option(WITH_TLS_PSK
-	"Include TLS-PSK support (requires WITH_TLS)?" ON)
+	"Include TLS-PSK support (requires WITH_TLS)?" OFF)
 option(WITH_EC
-	"Include Elliptic Curve support (requires WITH_TLS)?" ON)
+	"Include Elliptic Curve support (requires WITH_TLS)?" OFF)
 if (WITH_TLS)
 	find_package(OpenSSL REQUIRED)
 	add_definitions("-DWITH_TLS")
@@ -48,12 +48,12 @@ else (WITH_TLS)
 endif (WITH_TLS)
 
 
-option(WITH_UNIX_SOCKETS "Include Unix Domain Socket support?" ON)
+option(WITH_UNIX_SOCKETS "Include Unix Domain Socket support?" OFF)
 if (WITH_UNIX_SOCKETS AND NOT WIN32)
 	add_definitions("-DWITH_UNIX_SOCKETS")
 endif (WITH_UNIX_SOCKETS AND NOT WIN32)
 
-option(WITH_SOCKS "Include SOCKS5 support?" ON)
+option(WITH_SOCKS "Include SOCKS5 support?" OFF)
 if (WITH_SOCKS)
 	add_definitions("-DWITH_SOCKS")
 endif (WITH_SOCKS)
@@ -63,7 +63,7 @@ option(WITH_SRV "Include SRV lookup support?" OFF)
 option(WITH_STATIC_LIBRARIES "Build static versions of the libmosquitto/pp libraries?" OFF)
 option(WITH_PIC "Build the static library with PIC (Position Independent Code) enabled archives?" OFF)
 
-option(WITH_THREADING "Include client library threading support?" ON)
+option(WITH_THREADING "Include client library threading support?" OFF)
 if (WITH_THREADING)
 	add_definitions("-DWITH_THREADING")
 	if (WIN32)
@@ -96,7 +96,7 @@ if (WITH_DLT)
 	add_definitions("-DWITH_DLT")
 endif (WITH_DLT)
 
-option(WITH_CJSON "Build with cJSON support (required for dynamic security plugin and useful for mosquitto_sub)?" ON)
+option(WITH_CJSON "Build with cJSON support (required for dynamic security plugin and useful for mosquitto_sub)?" OFF)
 if (WITH_CJSON)
     FIND_PACKAGE(cJSON)
     if (CJSON_FOUND)
@@ -112,9 +112,9 @@ endif()
 
 option(WITH_CLIENTS "Build clients?" ON)
 option(WITH_BROKER "Build broker?" ON)
-option(WITH_APPS "Build apps?" ON)
-option(WITH_PLUGINS "Build plugins?" ON)
-option(DOCUMENTATION "Build documentation?" ON)
+option(WITH_APPS "Build apps?" OFF)
+option(WITH_PLUGINS "Build plugins?" OFF)
+option(DOCUMENTATION "Build documentation?" OFF)
 
 add_subdirectory(lib)
 if (WITH_CLIENTS)

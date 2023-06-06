@@ -12,9 +12,7 @@ link_directories(${mosquitto_SOURCE_DIR}/lib)
 if (WITH_BUNDLED_DEPS)
         include_directories(${mosquitto_SOURCE_DIR} ${mosquitto_SOURCE_DIR}/deps)
 endif (WITH_BUNDLED_DEPS)
-
-set(C_SRC
-	actions.c
+set(SRC actions.c
 	callbacks.c
 	connect.c
 	handle_auth.c
@@ -28,27 +26,23 @@ set(C_SRC
 	handle_suback.c
 	handle_unsuback.c
 	helpers.c
-	logging_mosq.c logging_mosq.h
 	loop.c
-	memory_mosq.c memory_mosq.h
-	messages_mosq.c messages_mosq.h
-	misc_mosq.c misc_mosq.h
-	mosquitto.c ../include/mosquitto.h
-	mosquitto_internal.h
-	../include/mqtt_protocol.h
-	net_mosq_ocsp.c net_mosq.c net_mosq.h
+	misc_mosq.c
+	mosquitto.c
+	net_mosq_ocsp.c
+	net_mosq.c
 	options.c
 	packet_datatypes.c
-	packet_mosq.c packet_mosq.h
-	property_mosq.c property_mosq.h
-	read_handle.c read_handle.h
+	packet_mosq.c
+	property_mosq.c
+	read_handle.c
 	send_connect.c
 	send_disconnect.c
 	send_mosq.c
 	send_publish.c
 	send_subscribe.c
 	send_unsubscribe.c
-	send_mosq.c send_mosq.h
+	send_mosq.c
 	socks_mosq.c
 	srv_mosq.c
 	strings_mosq.c
@@ -56,8 +50,28 @@ set(C_SRC
 	time_mosq.c
 	tls_mosq.c
 	utf8_mosq.c
-	util_mosq.c util_topic.c util_mosq.h
-	will_mosq.c will_mosq.h)
+	util_mosq.c
+	util_topic.c
+	will_mosq.c
+	)
+set_source_files_properties(${SRC} PROPERTIES LANGUAGE CXX)
+
+set(C_SRC
+	${SRC}
+	logging_mosq.c logging_mosq.h
+	memory_mosq.c memory_mosq.h
+	messages_mosq.c messages_mosq.h
+	misc_mosq.h
+	../include/mosquitto.h
+	mosquitto_internal.h
+	../include/mqtt_protocol.h
+	net_mosq.h
+	packet_mosq.h
+	property_mosq.h
+	read_handle.h
+	send_mosq.h
+	util_mosq.h
+	will_mosq.h)
 
 set (LIBRARIES ${OPENSSL_LIBRARIES} ${PTHREAD_LIBRARIES})
 

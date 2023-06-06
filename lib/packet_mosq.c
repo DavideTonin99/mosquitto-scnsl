@@ -73,7 +73,7 @@ int packet__alloc(struct mosquitto__packet *packet)
 #ifdef WITH_WEBSOCKETS
 	packet->payload = mosquitto__malloc(sizeof(uint8_t)*packet->packet_length + LWS_PRE);
 #else
-	packet->payload = mosquitto__malloc(sizeof(uint8_t)*packet->packet_length);
+	packet->payload = (uint8_t*)mosquitto__malloc(sizeof(uint8_t)*packet->packet_length);
 #endif
 	if(!packet->payload) return MOSQ_ERR_NOMEM;
 
@@ -492,7 +492,7 @@ int packet__read(struct mosquitto *mosq)
 		/* FIXME - client case for incoming message received from broker too large */
 #endif
 		if(mosq->in_packet.remaining_length > 0){
-			mosq->in_packet.payload = mosquitto__malloc(mosq->in_packet.remaining_length*sizeof(uint8_t));
+			mosq->in_packet.payload = (uint8_t*)mosquitto__malloc(mosq->in_packet.remaining_length*sizeof(uint8_t));
 			if(!mosq->in_packet.payload){
 				return MOSQ_ERR_NOMEM;
 			}
