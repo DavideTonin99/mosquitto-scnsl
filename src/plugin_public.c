@@ -167,7 +167,7 @@ int mosquitto_broker_publish(
 		return MOSQ_ERR_INVAL;
 	}
 
-	msg = mosquitto__malloc(sizeof(struct mosquitto_message_v5));
+	msg = (struct mosquitto_message_v5*)mosquitto__malloc(sizeof(struct mosquitto_message_v5));
 	if(msg == NULL) return MOSQ_ERR_NOMEM;
 
 	msg->next = NULL;

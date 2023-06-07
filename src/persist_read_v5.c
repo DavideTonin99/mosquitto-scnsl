@@ -127,7 +127,7 @@ int persist__chunk_client_msg_read_v56(FILE *db_fptr, struct P_client_msg *chunk
 	if(length > 0){
 		memset(&prop_packet, 0, sizeof(struct mosquitto__packet));
 		prop_packet.remaining_length = length;
-		prop_packet.payload = mosquitto__malloc(length);
+		prop_packet.payload = (uint8_t*)mosquitto__malloc(length);
 		if(!prop_packet.payload){
 			return MOSQ_ERR_NOMEM;
 		}
@@ -210,7 +210,7 @@ int persist__chunk_msg_store_read_v56(FILE *db_fptr, struct P_msg_store *chunk, 
 
 	if(length > 0){
 		prop_packet.remaining_length = length;
-		prop_packet.payload = mosquitto__malloc(length);
+		prop_packet.payload = (uint8_t*)mosquitto__malloc(length);
 		if(!prop_packet.payload){
 			mosquitto__free(chunk->source.id);
 			mosquitto__free(chunk->source.username);

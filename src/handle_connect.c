@@ -340,7 +340,7 @@ static int will__read(struct mosquitto *context, const char *client_id, struct m
 	uint16_t payloadlen;
 	mosquitto_property *properties = NULL;
 
-	will_struct = mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
+	will_struct = (mosquitto_message_all*)mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
 	if(!will_struct){
 		rc = MOSQ_ERR_NOMEM;
 		goto error_cleanup;
@@ -362,7 +362,7 @@ static int will__read(struct mosquitto *context, const char *client_id, struct m
 
 	if(context->listener->mount_point){
 		slen = strlen(context->listener->mount_point) + strlen(will_struct->msg.topic) + 1;
-		will_topic_mount = mosquitto__malloc(slen+1);
+		will_topic_mount = (char*)mosquitto__malloc(slen+1);
 		if(!will_topic_mount){
 			rc = MOSQ_ERR_NOMEM;
 			goto error_cleanup;

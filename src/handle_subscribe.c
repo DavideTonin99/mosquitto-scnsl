@@ -154,7 +154,7 @@ int handle__subscribe(struct mosquitto *context)
 
 			if(context->listener && context->listener->mount_point){
 				len = strlen(context->listener->mount_point) + slen + 1;
-				sub_mount = mosquitto__malloc(len+1);
+				sub_mount = (char*)mosquitto__malloc(len+1);
 				if(!sub_mount){
 					mosquitto__free(sub);
 					mosquitto__free(payload);
@@ -209,7 +209,7 @@ int handle__subscribe(struct mosquitto *context)
 			}
 			mosquitto__free(sub);
 
-			tmp_payload = mosquitto__realloc(payload, payloadlen + 1);
+			tmp_payload = (uint8_t*)mosquitto__realloc(payload, payloadlen + 1);
 			if(tmp_payload){
 				payload = tmp_payload;
 				payload[payloadlen] = qos;

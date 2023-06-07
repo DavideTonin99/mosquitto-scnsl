@@ -104,7 +104,7 @@ int send__publish(struct mosquitto *mosq, uint16_t mid, const char *topic, uint3
 					if(cur_topic->remote_prefix){
 						/* This prefix needs adding. */
 						len = strlen(mapped_topic) + strlen(cur_topic->remote_prefix)+1;
-						topic_temp = mosquitto__malloc(len+1);
+						topic_temp = (char*)mosquitto__malloc(len+1);
 						if(!topic_temp){
 							mosquitto__free(mapped_topic);
 							return MOSQ_ERR_NOMEM;

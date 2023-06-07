@@ -454,7 +454,7 @@ int config__parse_args(struct mosquitto__config *config, int argc, char *argv[])
 			){
 
 		config->listener_count++;
-		config->listeners = mosquitto__realloc(config->listeners, sizeof(struct mosquitto__listener)*(size_t)config->listener_count);
+		config->listeners = (mosquitto__listener*)mosquitto__realloc(config->listeners, sizeof(struct mosquitto__listener)*(size_t)config->listener_count);
 		if(!config->listeners){
 			log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 			return MOSQ_ERR_NOMEM;
@@ -661,7 +661,7 @@ int config__read(struct mosquitto__config *config, bool reload)
 		mosquitto__free(config->persistence_filepath);
 		if(config->persistence_location && strlen(config->persistence_location)){
 			len = strlen(config->persistence_location) + strlen(config->persistence_file) + 2;
-			config->persistence_filepath = mosquitto__malloc(len);
+			config->persistence_filepath = (char*)mosquitto__malloc(len);
 			if(!config->persistence_filepath) return MOSQ_ERR_NOMEM;
 #ifdef WIN32
 			snprintf(config->persistence_filepath, len, "%s\\%s", config->persistence_location, config->persistence_file);
@@ -783,7 +783,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 							break;
 						}
 						cur_bridge->address_count++;
-						cur_bridge->addresses = mosquitto__realloc(cur_bridge->addresses, sizeof(struct bridge_address)*(size_t)cur_bridge->address_count);
+						cur_bridge->addresses = (bridge_address*)mosquitto__realloc(cur_bridge->addresses, sizeof(struct bridge_address)*(size_t)cur_bridge->address_count);
 						if(!cur_bridge->addresses){
 							log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 							return MOSQ_ERR_NOMEM;
@@ -866,7 +866,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 					}
 					if(token[0]){
 						cur_auth_plugin_config->option_count++;
-						cur_auth_plugin_config->options = mosquitto__realloc(cur_auth_plugin_config->options, (size_t)cur_auth_plugin_config->option_count*sizeof(struct mosquitto_auth_opt));
+						cur_auth_plugin_config->options = (mosquitto_opt*)mosquitto__realloc(cur_auth_plugin_config->options, (size_t)cur_auth_plugin_config->option_count*sizeof(struct mosquitto_auth_opt));
 						if(!cur_auth_plugin_config->options){
 							log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 							mosquitto__free(key);
@@ -886,7 +886,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 				}else if(!strcmp(token, "auth_plugin") || !strcmp(token, "plugin")){
 					if(reload) continue; /* Auth plugin not currently valid for reloading. */
 					conf__set_cur_security_options(config, cur_listener, &cur_security_options);
-					cur_security_options->auth_plugin_configs = mosquitto__realloc(cur_security_options->auth_plugin_configs, (size_t)(cur_security_options->auth_plugin_config_count+1)*sizeof(struct mosquitto__auth_plugin_config));
+					cur_security_options->auth_plugin_configs =(struct mosquitto__auth_plugin_config*)mosquitto__realloc(cur_security_options->auth_plugin_configs, (size_t)(cur_security_options->auth_plugin_config_count+1)*sizeof(struct mosquitto__auth_plugin_config));
 					if(!cur_security_options->auth_plugin_configs){
 						log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 						return MOSQ_ERR_NOMEM;
@@ -1252,7 +1252,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 						}
 
 						config->bridge_count++;
-						config->bridges = mosquitto__realloc(config->bridges, (size_t)config->bridge_count*sizeof(struct mosquitto__bridge));
+						config->bridges = (mosquitto__bridge*)mosquitto__realloc(config->bridges, (size_t)config->bridge_count*sizeof(struct mosquitto__bridge));
 						if(!config->bridges){
 							log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 							return MOSQ_ERR_NOMEM;
@@ -1449,7 +1449,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 							}
 						}else{
 							config->listener_count++;
-							config->listeners = mosquitto__realloc(config->listeners, sizeof(struct mosquitto__listener)*(size_t)config->listener_count);
+							config->listeners = (struct mosquitto__listener*)mosquitto__realloc(config->listeners, sizeof(struct mosquitto__listener)*(size_t)config->listener_count);
 							if(!config->listeners){
 								log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 								return MOSQ_ERR_NOMEM;
@@ -2220,7 +2220,7 @@ int config__read_file(struct mosquitto__config *config, bool reload, const char 
 	}
 
 	buflen = 1000;
-	buf = mosquitto__malloc((size_t)buflen);
+	buf = (char*)mosquitto__malloc((size_t)buflen);
 	if(!buf){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		fclose(fptr);
@@ -2255,7 +2255,7 @@ static int config__check(struct mosquitto__config *config)
 		if(!bridge1->remote_clientid){
 			if(!gethostname(hostname, 256)){
 				len = strlen(hostname) + strlen(bridge1->name) + 2;
-				bridge1->remote_clientid = mosquitto__malloc(len);
+				bridge1->remote_clientid = (char*)mosquitto__malloc(len);
 				if(!bridge1->remote_clientid){
 					return MOSQ_ERR_NOMEM;
 				}
@@ -2267,7 +2267,7 @@ static int config__check(struct mosquitto__config *config)
 
 		if(!bridge1->local_clientid){
 			len = strlen(bridge1->remote_clientid) + strlen("local.") + 2;
-			bridge1->local_clientid = mosquitto__malloc(len);
+			bridge1->local_clientid = (char*)mosquitto__malloc(len);
 			if(!bridge1->local_clientid){
 				log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 				return MOSQ_ERR_NOMEM;

@@ -33,7 +33,7 @@ int send__unsuback(struct mosquitto *mosq, uint16_t mid, int reason_code_count, 
 	int rc;
 
 	assert(mosq);
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->command = CMD_UNSUBACK;

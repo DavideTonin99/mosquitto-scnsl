@@ -55,7 +55,7 @@ int session_expiry__add(struct mosquitto *context)
 		}
 	}
 
-	item = mosquitto__calloc(1, sizeof(struct session_expiry_list));
+	item = (struct session_expiry_list*)mosquitto__calloc(1, sizeof(struct session_expiry_list));
 	if(!item) return MOSQ_ERR_NOMEM;
 
 	item->context = context;
@@ -94,7 +94,7 @@ int session_expiry__add_from_persistence(struct mosquitto *context, time_t expir
 		}
 	}
 
-	item = mosquitto__calloc(1, sizeof(struct session_expiry_list));
+	item = (struct session_expiry_list*)mosquitto__calloc(1, sizeof(struct session_expiry_list));
 	if(!item) return MOSQ_ERR_NOMEM;
 
 	item->context = context;

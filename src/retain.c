@@ -35,14 +35,14 @@ static struct mosquitto__retainhier *retain__add_hier_entry(struct mosquitto__re
 
 	assert(sibling);
 
-	child = mosquitto__calloc(1, sizeof(struct mosquitto__retainhier));
+	child = (struct mosquitto__retainhier*)mosquitto__calloc(1, sizeof(struct mosquitto__retainhier));
 	if(!child){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return NULL;
 	}
 	child->parent = parent;
 	child->topic_len = len;
-	child->topic = mosquitto__malloc((size_t)len+1);
+	child->topic = (char*)mosquitto__malloc((size_t)len+1);
 	if(!child->topic){
 		child->topic_len = 0;
 		mosquitto__free(child);
