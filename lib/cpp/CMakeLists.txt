@@ -3,6 +3,7 @@ include_directories(${mosquitto_SOURCE_DIR}/lib ${mosquitto_SOURCE_DIR}/lib/cpp
 			${STDBOOL_H_PATH} ${STDINT_H_PATH})
 link_directories(${mosquitto_BINARY_DIR}/lib)
 
+set_source_files_properties(mosquittopp.cpp PROPERTIES LANGUAGE CXX)
 set(CPP_SRC mosquittopp.cpp mosquittopp.h)
 
 add_library(mosquittopp SHARED ${CPP_SRC})

@@ -291,7 +291,7 @@ int client_config_load(struct mosq_config *cfg, int pub_or_sub, int argc, char *
 	env = getenv("XDG_CONFIG_HOME");
 	if(env){
 		len = strlen(env) + strlen("/mosquitto_pub") + 1;
-		loc = malloc(len);
+		loc =(char*)malloc(len);
 		if(!loc){
 			err_printf(cfg, "Error: Out of memory.\n");
 			return 1;
@@ -308,7 +308,7 @@ int client_config_load(struct mosq_config *cfg, int pub_or_sub, int argc, char *
 		env = getenv("HOME");
 		if(env){
 			len = strlen(env) + strlen("/.config/mosquitto_pub") + 1;
-			loc = malloc(len);
+			loc = (char*)malloc(len);
 			if(!loc){
 				err_printf(cfg, "Error: Out of memory.\n");
 				return 1;
@@ -509,7 +509,7 @@ static int cfg_add_topic(struct mosq_config *cfg, int type, char *topic, const c
 			return 1;
 		}
 		cfg->topic_count++;
-		cfg->topics = realloc(cfg->topics, (size_t )cfg->topic_count*sizeof(char *));
+		cfg->topics = (char**)realloc(cfg->topics, (size_t )cfg->topic_count*sizeof(char *));
 		if(!cfg->topics){
 			err_printf(cfg, "Error: Out of memory.\n");
 			return 1;
@@ -1025,7 +1025,7 @@ int client_config_line_proc(struct mosq_config *cfg, int pub_or_sub, int argc, c
 					return 1;
 				}
 				cfg->filter_out_count++;
-				cfg->filter_outs = realloc(cfg->filter_outs, (size_t )cfg->filter_out_count*sizeof(char *));
+				cfg->filter_outs = (char**)realloc(cfg->filter_outs, (size_t )cfg->filter_out_count*sizeof(char *));
 				if(!cfg->filter_outs){
 					fprintf(stderr, "Error: Out of memory.\n");
 					return 1;
@@ -1086,7 +1086,7 @@ int client_config_line_proc(struct mosq_config *cfg, int pub_or_sub, int argc, c
 					return 1;
 				}
 				cfg->unsub_topic_count++;
-				cfg->unsub_topics = realloc(cfg->unsub_topics, (size_t )cfg->unsub_topic_count*sizeof(char *));
+				cfg->unsub_topics = (char**)realloc(cfg->unsub_topics, (size_t )cfg->unsub_topic_count*sizeof(char *));
 				if(!cfg->unsub_topics){
 					fprintf(stderr, "Error: Out of memory.\n");
 					return 1;
@@ -1336,7 +1336,7 @@ int client_opts_set(struct mosquitto *mosq, struct mosq_config *cfg)
 int client_id_generate(struct mosq_config *cfg)
 {
 	if(cfg->id_prefix){
-		cfg->id = malloc(strlen(cfg->id_prefix)+10);
+		cfg->id = (char*)malloc(strlen(cfg->id_prefix)+10);
 		if(!cfg->id){
 			err_printf(cfg, "Error: Out of memory.\n");
 			mosquitto_lib_cleanup();
