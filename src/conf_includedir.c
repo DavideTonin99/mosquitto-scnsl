@@ -163,7 +163,7 @@ int config__get_dir_files(const char *include_dir, char ***files, int *file_coun
 				len = strlen(include_dir)+1+strlen(de->d_name)+1;
 
 				l_file_count++;
-				files_tmp = mosquitto__realloc(l_files, (size_t)l_file_count*sizeof(char *));
+				files_tmp = (char**)mosquitto__realloc(l_files, (size_t)l_file_count*sizeof(char *));
 				if(!files_tmp){
 					for(i=0; i<l_file_count-1; i++){
 						mosquitto__free(l_files[i]);
@@ -174,7 +174,7 @@ int config__get_dir_files(const char *include_dir, char ***files, int *file_coun
 				}
 				l_files = files_tmp;
 
-				l_files[l_file_count-1] = mosquitto__malloc(len+1);
+				l_files[l_file_count-1] = (char*)mosquitto__malloc(len+1);
 				if(!l_files[l_file_count-1]){
 					for(i=0; i<l_file_count-1; i++){
 						mosquitto__free(l_files[i]);

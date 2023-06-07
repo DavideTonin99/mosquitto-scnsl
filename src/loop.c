@@ -75,7 +75,7 @@ static int single_publish(struct mosquitto *context, struct mosquitto_message_v5
 	struct mosquitto_msg_store *stored;
 	uint16_t mid;
 
-	stored = mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
+	stored =(struct mosquitto_msg_store*) mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
 	if(stored == NULL) return MOSQ_ERR_NOMEM;
 
 	stored->topic = msg->topic;

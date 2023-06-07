@@ -77,7 +77,7 @@ int plugin__load_v5(struct mosquitto__listener *listener, struct mosquitto__auth
 		return MOSQ_ERR_UNKNOWN;
 	}
 
-	pid = mosquitto__calloc(1, sizeof(mosquitto_plugin_id_t));
+	pid = (mosquitto_plugin_id_t*)mosquitto__calloc(1, sizeof(mosquitto_plugin_id_t));
 	if(pid == NULL){
 		log__printf(NULL, MOSQ_LOG_ERR,
 				"Error: Out of memory.");
@@ -271,7 +271,7 @@ int mosquitto_callback_register(
 		return MOSQ_ERR_ALREADY_EXISTS;
 	}
 
-	cb_new = mosquitto__calloc(1, sizeof(struct mosquitto__callback));
+	cb_new = (struct mosquitto__callback*)mosquitto__calloc(1, sizeof(struct mosquitto__callback));
 	if(cb_new == NULL){
 		return MOSQ_ERR_NOMEM;
 	}

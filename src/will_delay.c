@@ -44,7 +44,7 @@ int will_delay__add(struct mosquitto *context)
 		return MOSQ_ERR_SUCCESS;
 	}
 
-	item = mosquitto__calloc(1, sizeof(struct will_delay_list));
+	item = (struct will_delay_list*) mosquitto__calloc(1, sizeof(struct will_delay_list));
 	if(!item) return MOSQ_ERR_NOMEM;
 
 	item->context = context;

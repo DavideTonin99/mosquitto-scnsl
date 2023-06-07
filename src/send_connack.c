@@ -83,7 +83,7 @@ int send__connack(struct mosquitto *context, uint8_t ack, uint8_t reason_code, c
 		return MOSQ_ERR_OVERSIZE_PACKET;
 	}
 
-	packet = mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet =(struct mosquitto__packet*) mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet){
 		mosquitto_property_free_all(&connack_props);
 		return MOSQ_ERR_NOMEM;

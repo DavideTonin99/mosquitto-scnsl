@@ -30,7 +30,7 @@ static int bridge__create_remap_topic(const char *prefix, const char *topic, cha
 	if(prefix){
 		if(topic){
 			len = strlen(topic) + strlen(prefix)+1;
-			*remap_topic = mosquitto__malloc(len+1);
+			*remap_topic =(char**) mosquitto__malloc(len+1);
 			if(!(*remap_topic)){
 				log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 				return MOSQ_ERR_NOMEM;
@@ -69,7 +69,7 @@ static int bridge__create_prefix(char **full_prefix, const char *topic, const ch
 	}else{
 		len = strlen(prefix) + 1;
 	}
-	*full_prefix = mosquitto__malloc(len);
+	*full_prefix =(char**) mosquitto__malloc(len);
 	if(*full_prefix == NULL){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;
@@ -128,7 +128,7 @@ int bridge__add_topic(struct mosquitto__bridge *bridge, const char *topic, enum 
 
 
 	bridge->topic_count++;
-	topics = mosquitto__realloc(bridge->topics,
+	topics = (struct mosquitto__bridge_topic *)mosquitto__realloc(bridge->topics,
 				sizeof(struct mosquitto__bridge_topic)*(size_t)bridge->topic_count);
 
 	if(topics == NULL){
@@ -224,7 +224,7 @@ int bridge__remap_topic_in(struct mosquitto *context, char **topic)
 					if(cur_topic->local_prefix){
 						/* This prefix needs adding. */
 						len = strlen(*topic) + strlen(cur_topic->local_prefix)+1;
-						topic_temp = mosquitto__malloc(len+1);
+						topic_temp =(char*) mosquitto__malloc(len+1);
 						if(!topic_temp){
 							mosquitto__free(*topic);
 							return MOSQ_ERR_NOMEM;

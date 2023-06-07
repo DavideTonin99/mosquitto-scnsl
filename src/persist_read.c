@@ -78,7 +78,7 @@ int persist__read_string_len(FILE *db_fptr, char **str, uint16_t len)
 	char *s = NULL;
 
 	if(len){
-		s = mosquitto__malloc(len+1U);
+		s = (char*)mosquitto__malloc(len+1U);
 		if(!s){
 			log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 			return MOSQ_ERR_NOMEM;
@@ -128,7 +128,7 @@ static int persist__client_msg_restore(struct P_client_msg *chunk)
 		return 0;
 	}
 
-	cmsg = mosquitto__calloc(1, sizeof(struct mosquitto_client_msg));
+	cmsg = (struct mosquitto_client_msg*) mosquitto__calloc(1, sizeof(struct mosquitto_client_msg));
 	if(!cmsg){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;
@@ -273,7 +273,7 @@ static int persist__msg_store_chunk_restore(FILE *db_fptr, uint32_t length)
 			}
 		}
 	}
-	load = mosquitto__calloc(1, sizeof(struct mosquitto_msg_store_load));
+	load = (struct mosquitto_msg_store_load*)mosquitto__calloc(1, sizeof(struct mosquitto_msg_store_load));
 	if(!load){
 		mosquitto__free(chunk.source.id);
 		mosquitto__free(chunk.source.username);
@@ -300,7 +300,7 @@ static int persist__msg_store_chunk_restore(FILE *db_fptr, uint32_t length)
 		message_expiry_interval = 0;
 	}
 
-	stored = mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
+	stored = (struct mosquitto_msg_store*)mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
 	if(stored == NULL){
 		mosquitto__free(load);
 		mosquitto__free(chunk.source.id);

@@ -93,7 +93,7 @@ int control__register_callback(struct mosquitto__security_options *opts, MOSQ_FU
 		return MOSQ_ERR_ALREADY_EXISTS;
 	}
 
-	cb_new = mosquitto__calloc(1, sizeof(struct mosquitto__callback));
+	cb_new =(struct mosquitto__callback*) mosquitto__calloc(1, sizeof(struct mosquitto__callback));
 	if(cb_new == NULL){
 		return MOSQ_ERR_NOMEM;
 	}

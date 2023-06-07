@@ -79,7 +79,7 @@ int sub__topic_tokenise(const char *subtopic, char **local_sub, char ***topics, 
 		saveptr = strchr(&saveptr[1], '/');
 		count++;
 	}
-	*topics = mosquitto__calloc((size_t)(count+3) /* 3=$shared,sharename,NULL */, sizeof(char *));
+	*topics = (char*)mosquitto__calloc((size_t)(count+3) /* 3=$shared,sharename,NULL */, sizeof(char *));
 	if((*topics) == NULL){
 		mosquitto__free(*local_sub);
 		return MOSQ_ERR_NOMEM;

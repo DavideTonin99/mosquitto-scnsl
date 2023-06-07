@@ -210,7 +210,7 @@ static int listeners__start_single_mqtt(struct mosquitto__listener *listener)
 		return 1;
 	}
 	listensock_count += listener->sock_count;
-	listensock_new = mosquitto__realloc(listensock, sizeof(struct mosquitto__listener_sock)*(size_t)listensock_count);
+	listensock_new = (struct mosquitto__listener_sock*) mosquitto__realloc(listensock, sizeof(struct mosquitto__listener_sock)*(size_t)listensock_count);
 	if(!listensock_new){
 		return 1;
 	}
@@ -296,7 +296,7 @@ static int listeners__start_local_only(void)
 	int rc;
 	struct mosquitto__listener *listeners;
 
-	listeners = mosquitto__realloc(db.config->listeners, 2*sizeof(struct mosquitto__listener));
+	listeners =(struct mosquitto__listener*) mosquitto__realloc(db.config->listeners, 2*sizeof(struct mosquitto__listener));
 	if(listeners == NULL){
 		return MOSQ_ERR_NOMEM;
 	}

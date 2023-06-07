@@ -56,7 +56,7 @@ int send__unsubscribe(struct mosquitto *mosq, int *mid, int topic_count, char *c
 		packetlen += 2U+(uint16_t)tlen;
 	}
 
-	packet =(struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	if(mosq->protocol == mosq_p_mqtt5){

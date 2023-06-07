@@ -169,7 +169,7 @@ int mosquitto__hex2bin_sha1(const char *hex, unsigned char **bin)
 		return MOSQ_ERR_INVAL;
 	}
 
-	sha = mosquitto__malloc(SHA_DIGEST_LENGTH);
+	sha =(unsigned char*) mosquitto__malloc(SHA_DIGEST_LENGTH);
 	if(!sha){
 		return MOSQ_ERR_NOMEM;
 	}

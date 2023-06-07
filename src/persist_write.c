@@ -224,7 +224,7 @@ static int persist__subs_save(FILE *db_fptr, struct mosquitto__subhier *node, co
 	memset(&sub_chunk, 0, sizeof(struct P_sub));
 
 	slen = strlen(topic) + node->topic_len + 2;
-	thistopic = mosquitto__malloc(sizeof(char)*slen);
+	thistopic = (char*)mosquitto__malloc(sizeof(char)*slen);
 	if(!thistopic) return MOSQ_ERR_NOMEM;
 	if(level > 1 || strlen(topic)){
 		snprintf(thistopic, slen, "%s/%s", topic, node->topic);
@@ -326,7 +326,7 @@ int persist__backup(bool shutdown)
 	log__printf(NULL, MOSQ_LOG_INFO, "Saving in-memory database to %s.", db.config->persistence_filepath);
 
 	len = strlen(db.config->persistence_filepath)+5;
-	outfile = mosquitto__malloc(len+1);
+	outfile = (char*)mosquitto__malloc(len+1);
 	if(!outfile){
 		log__printf(NULL, MOSQ_LOG_INFO, "Error saving in-memory database, out of memory.");
 		return MOSQ_ERR_NOMEM;

@@ -57,7 +57,7 @@ int handle__publish(struct mosquitto *context)
 		return MOSQ_ERR_PROTOCOL;
 	}
 
-	msg = mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
+	msg = (struct mosquitto_msg_store*)mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
 	if(msg == NULL){
 		return MOSQ_ERR_NOMEM;
 	}
@@ -211,7 +211,7 @@ int handle__publish(struct mosquitto *context)
 	G_PUB_BYTES_RECEIVED_INC(msg->payloadlen);
 	if(context->listener && context->listener->mount_point){
 		len = strlen(context->listener->mount_point) + strlen(msg->topic) + 1;
-		topic_mount = mosquitto__malloc(len+1);
+		topic_mount =(char*) mosquitto__malloc(len+1);
 		if(!topic_mount){
 			db__msg_store_free(msg);
 			return MOSQ_ERR_NOMEM;

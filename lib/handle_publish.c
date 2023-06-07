@@ -50,7 +50,7 @@ int handle__publish(struct mosquitto *mosq)
 		return MOSQ_ERR_PROTOCOL;
 	}
 
-	message = (struct mosquitto_message_all *)mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
+	message = (struct mosquitto_message_all*)mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
 	if(!message) return MOSQ_ERR_NOMEM;
 
 	header = mosq->in_packet.command;

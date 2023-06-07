@@ -362,7 +362,7 @@ static int will__read(struct mosquitto *context, const char *client_id, struct m
 
 	if(context->listener->mount_point){
 		slen = strlen(context->listener->mount_point) + strlen(will_struct->msg.topic) + 1;
-		will_topic_mount = mosquitto__malloc(slen+1);
+		will_topic_mount = (char*)mosquitto__malloc(slen+1);
 		if(!will_topic_mount){
 			rc = MOSQ_ERR_NOMEM;
 			goto error_cleanup;
@@ -820,7 +820,7 @@ int handle__connect(struct mosquitto *context)
 				X509_NAME_print_ex(subject_bio, X509_get_subject_name(client_cert), 0, XN_FLAG_RFC2253);
 				data_start = NULL;
 				name_length = BIO_get_mem_data(subject_bio, &data_start);
-				subject = mosquitto__malloc(sizeof(char)*(size_t)(name_length+1));
+				subject =(char*) mosquitto__malloc(sizeof(char)*(size_t)(name_length+1));
 				if(!subject){
 					BIO_free(subject_bio);
 					rc = MOSQ_ERR_NOMEM;

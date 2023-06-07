@@ -57,7 +57,7 @@ int dynsec_auth__base64_encode(unsigned char *in, int in_len, char **encoded)
 		return 1;
 	}
 	BIO_get_mem_ptr(b64, &bptr);
-	*encoded = mosquitto_malloc(bptr->length+1);
+	*encoded = (char**)mosquitto_malloc(bptr->length+1);
 	if(!(*encoded)){
 		BIO_free_all(b64);
 		return 1;
