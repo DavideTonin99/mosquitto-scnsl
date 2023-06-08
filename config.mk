@@ -26,10 +26,10 @@ WITH_TLS:=no
 # Comment out to disable TLS/PSK support in the broker and client. Requires
 # WITH_TLS=yes.
 # This must be disabled if using openssl < 1.0.
-WITH_TLS_PSK:=yes
+WITH_TLS_PSK:=no
 
 # Comment out to disable client threading support.
-WITH_THREADING:=yes
+WITH_THREADING:=no
 
 # Comment out to remove bridge support from the broker. This allow the broker
 # to connect to other brokers and subscribe/publish to topics. You probably
@@ -41,12 +41,12 @@ WITH_BRIDGE:=no
 # allows the broker to store retained messages and durable subscriptions to a
 # file periodically and on shutdown. This is usually desirable (and is
 # suggested by the MQTT spec), but it can be disabled if required.
-WITH_PERSISTENCE:=yes
+WITH_PERSISTENCE:=no
 
 # Comment out to remove memory tracking support from the broker. If disabled,
 # mosquitto won't track heap memory usage nor export '$SYS/broker/heap/current
 # size', but will use slightly less memory and CPU time.
-WITH_MEMORY_TRACKING:=yes
+WITH_MEMORY_TRACKING:=no
 
 # Compile with database upgrading support? If disabled, mosquitto won't
 # automatically upgrade old database versions.
@@ -55,7 +55,7 @@ WITH_MEMORY_TRACKING:=yes
 
 # Comment out to remove publishing of the $SYS topic hierarchy containing
 # information about the broker state.
-WITH_SYS_TREE:=yes
+WITH_SYS_TREE:=no
 
 # Build with systemd support. If enabled, mosquitto will notify systemd after
 # initialization. See README in service/systemd/ for more information.
@@ -70,13 +70,13 @@ WITH_SRV:=no
 WITH_WEBSOCKETS:=no
 
 # Use elliptic keys in broker
-WITH_EC:=yes
+WITH_EC:=no
 
 # Build man page documentation by default.
-WITH_DOCS:=yes
+WITH_DOCS:=no
 
 # Build with client support for SOCK5 proxy.
-WITH_SOCKS:=yes
+WITH_SOCKS:=no
 
 # Strip executables and shared libraries on install.
 WITH_STRIP:=no
@@ -96,7 +96,7 @@ WITH_SHARED_LIBRARIES:=yes
 #WITH_ADNS:=yes
 
 # Build with epoll support.
-WITH_EPOLL:=yes
+WITH_EPOLL:=no
 
 # Build with bundled uthash.h
 WITH_BUNDLED_DEPS:=yes
@@ -111,7 +111,7 @@ WITH_UNIX_SOCKETS:=yes
 WITH_CJSON:=no
 
 # Build mosquitto with support for the $CONTROL topics.
-WITH_CONTROL:=yes
+WITH_CONTROL:=no
 
 # Build the broker with the jemalloc allocator
 WITH_JEMALLOC:=no
@@ -133,9 +133,9 @@ VERSION=2.0.15
 SOVERSION=1
 
 # Man page generation requires xsltproc and docbook-xsl
-XSLTPROC=xsltproc --nonet
+#XSLTPROC=xsltproc --nonet
 # For html generation
-DB_HTML_XSL=man/html.xsl
+#DB_HTML_XSL=man/html.xsl
 
 #MANCOUNTRIES=en_GB
 

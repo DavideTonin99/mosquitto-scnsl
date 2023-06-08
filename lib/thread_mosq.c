@@ -101,7 +101,7 @@ int mosquitto_loop_stop(struct mosquitto *mosq, bool force)
 #ifdef WITH_THREADING
 void *mosquitto__thread_main(void *obj)
 {
-	struct mosquitto *mosq = obj;
+	struct mosquitto *mosq = (mosquitto*)obj;
 #ifndef WIN32
 	struct timespec ts;
 	ts.tv_sec = 0;

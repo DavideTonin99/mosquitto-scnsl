@@ -84,7 +84,7 @@ int mux_poll__init(struct mosquitto__listener_sock *listensock, int listensock_c
 	pollfd_max = (size_t)sysconf(_SC_OPEN_MAX);
 #endif
 
-	pollfds = mosquitto__calloc(pollfd_max, sizeof(struct pollfd));
+	pollfds = (struct pollfd*)mosquitto__calloc(pollfd_max, sizeof(struct pollfd));
 	if(!pollfds){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;

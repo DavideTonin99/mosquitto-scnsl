@@ -828,7 +828,7 @@ static int net__socket_listen_unix(struct mosquitto__listener *listener)
 		return 1;
 	}
 	listener->sock_count++;
-	listener->socks = mosquitto__realloc(listener->socks, sizeof(mosq_sock_t)*(size_t)listener->sock_count);
+	listener->socks = (mosq_sock_t*)mosquitto__realloc(listener->socks, sizeof(mosq_sock_t)*(size_t)listener->sock_count);
 	if(!listener->socks){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		COMPAT_CLOSE(sock);

@@ -1485,7 +1485,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 					goto cleanup;
 				}
 				len = i-start;
-				host = malloc(len + 1);
+				host = (char*)malloc(len + 1);
 				if(!host){
 					err_printf(cfg, "Error: Out of memory.\n");
 					goto cleanup;
@@ -1498,7 +1498,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 				 * socks5h://host:port or
 				 * socks5h://username:password@host[:port] */
 				len = i-start;
-				username_or_host = malloc(len + 1);
+				username_or_host = (char*)malloc(len + 1);
 				if(!username_or_host){
 					err_printf(cfg, "Error: Out of memory.\n");
 					goto cleanup;
@@ -1518,7 +1518,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 				username_or_host = NULL;
 
 				len = i-start;
-				password = malloc(len + 1);
+				password = (char*)malloc(len + 1);
 				if(!password){
 					err_printf(cfg, "Error: Out of memory.\n");
 					goto cleanup;
@@ -1534,7 +1534,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 					goto cleanup;
 				}
 				len = i-start;
-				username = malloc(len + 1);
+				username = (char*)malloc(len + 1);
 				if(!username){
 					err_printf(cfg, "Error: Out of memory.\n");
 					goto cleanup;
@@ -1552,7 +1552,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 		if(host){
 			/* Have already seen a @ , so this must be of form
 			 * socks5h://username[:password]@host:port */
-			port = malloc(len + 1);
+			port = (char*)malloc(len + 1);
 			if(!port){
 				err_printf(cfg, "Error: Out of memory.\n");
 				goto cleanup;
@@ -1564,7 +1564,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 			 * socks5h://host:port */
 			host = username_or_host;
 			username_or_host = NULL;
-			port = malloc(len + 1);
+			port = (char*)malloc(len + 1);
 			if(!port){
 				err_printf(cfg, "Error: Out of memory.\n");
 				goto cleanup;
@@ -1572,7 +1572,7 @@ static int mosquitto__parse_socks_url(struct mosq_config *cfg, char *url)
 			memcpy(port, &(str[start]), len);
 			port[len] = '\0';
 		}else{
-			host = malloc(len + 1);
+			host = (char*)malloc(len + 1);
 			if(!host){
 				err_printf(cfg, "Error: Out of memory.\n");
 				goto cleanup;
