@@ -19,7 +19,7 @@ Contributors:
 #define NET_MOSQ_H
 
 #ifndef WIN32
-#  include <sys/socket.h>
+//#include <sys/socket.h>
 #  include <unistd.h>
 #else
 #  include <winsock2.h>

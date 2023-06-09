@@ -31,8 +31,8 @@ Contributors:
 #endif
 
 #ifndef WIN32
-#  include <netdb.h>
-#  include <sys/socket.h>
+//#include <netdb.h>
+//#include <sys/socket.h>
 #else
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
@@ -95,8 +95,9 @@ static int conf__attempt_resolve(const char *host, const char *text, unsigned in
 		freeaddrinfo(gai_res);
 	}
 	if(rc != 0){
+
 #ifndef WIN32
-		if(rc == EAI_SYSTEM){
+		/*if(rc == EAI_SYSTEM){
 			if(errno == ENOENT){
 				log__printf(NULL, log, "%s: Unable to resolve %s %s.", msg, text, host);
 			}else{
@@ -104,7 +105,7 @@ static int conf__attempt_resolve(const char *host, const char *text, unsigned in
 			}
 		}else{
 			log__printf(NULL, log, "%s: Error resolving %s: %s.", msg, text, gai_strerror(rc));
-		}
+		}*/
 #else
 		if(rc == WSAHOST_NOT_FOUND){
 			log__printf(NULL, log, "%s: Error resolving %s.", msg, text);

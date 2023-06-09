@@ -24,14 +24,14 @@ Contributors:
 #ifdef WIN32
 #  include <ws2tcpip.h>
 #elif defined(__QNX__)
-#  include <sys/socket.h>
-#  include <arpa/inet.h>
+//#include <sys/socket.h>
+//#include <arpa/inet.h>
 #  include <netinet/in.h>
 #else
-#  include <arpa/inet.h>
+//#include <arpa/inet.h>
 #endif
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
-#  include <sys/socket.h>
+//#include <sys/socket.h>
 #  include <netinet/in.h>
 #endif
 

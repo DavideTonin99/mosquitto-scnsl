@@ -19,12 +19,12 @@ Contributors:
 #include "config.h"
 
 #ifndef WIN32
-#  include <arpa/inet.h>
-#  include <ifaddrs.h>
-#  include <netdb.h>
-#  include <netinet/tcp.h>
+//#include <arpa/inet.h>
+#include <ifaddrs.h>
+//#include <netdb.h>
+//# include <netinet/tcp.h>
 #  include <strings.h>
-#  include <sys/socket.h>
+//#include <sys/socket.h>
 #  include <unistd.h>
 #else
 #  include <winsock2.h>

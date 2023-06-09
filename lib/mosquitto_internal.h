@@ -60,7 +60,7 @@ Contributors:
 #include "time_mosq.h"
 #ifdef WITH_BROKER
 #  ifdef __linux__
-#    include <netdb.h>
+//#include <netdb.h>
 #  endif
 #  include "uthash.h"
 struct mosquitto_client_msg;

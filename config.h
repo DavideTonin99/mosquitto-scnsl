@@ -88,3 +88,6 @@
 #endif
 
 #endif
+
+#include <scnsl.hh>
+using namespace Scnsl::Syscalls;

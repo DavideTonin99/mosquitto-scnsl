@@ -21,7 +21,7 @@ Contributors:
 #ifdef WITH_PERSISTENCE
 
 #ifndef WIN32
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #endif
 #include <assert.h>
 #include <errno.h>

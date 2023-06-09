@@ -26,9 +26,9 @@ Contributors:
 #include <string.h>
 #ifndef WIN32
 #define _GNU_SOURCE
-#include <netdb.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
+//#include <netdb.h>
+//# include <netinet/tcp.h>
+//#include <sys/socket.h>
 #include <unistd.h>
 #else
 #include <winsock2.h>

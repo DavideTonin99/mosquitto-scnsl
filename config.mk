@@ -90,7 +90,7 @@ WITH_STATIC_LIBRARIES:=no
 CLIENT_STATIC_LDADD:=
 
 # Build shared libraries
-WITH_SHARED_LIBRARIES:=yes
+WITH_SHARED_LIBRARIES:=no
 
 # Build with async dns lookup support for bridges (temporary). Requires glibc.
 #WITH_ADNS:=yes
@@ -105,7 +105,7 @@ WITH_BUNDLED_DEPS:=yes
 WITH_COVERAGE:=no
 
 # Build with unix domain socket support
-WITH_UNIX_SOCKETS:=yes
+WITH_UNIX_SOCKETS:=no
 
 # Build mosquitto_sub with cJSON support
 WITH_CJSON:=no
