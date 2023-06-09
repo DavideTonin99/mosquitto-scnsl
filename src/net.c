@@ -24,7 +24,7 @@ Contributors:
 #  include <netdb.h>
 #  include <netinet/tcp.h>
 #  include <strings.h>
-#  include <sys/socket.h>
+#  include <scnsl.hh>
 #  include <unistd.h>
 #else
 #  include <winsock2.h>

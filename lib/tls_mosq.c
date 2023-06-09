@@ -25,7 +25,7 @@ Contributors:
 #  include <ws2tcpip.h>
 #else
 #  include <arpa/inet.h>
-#  include <sys/socket.h>
+#  include <scnsl.hh>
 #  include <strings.h>
 #endif
 

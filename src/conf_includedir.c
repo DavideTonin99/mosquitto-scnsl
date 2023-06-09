@@ -33,7 +33,7 @@ Contributors:
 #ifndef WIN32
 #  include <strings.h>
 #  include <netdb.h>
-#  include <sys/socket.h>
+#  include <scnsl.hh>
 #else
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
