@@ -18,6 +18,9 @@ Contributors:
 
 #include "config.h"
 
+#include <scnsl.hh>
+using namespace Scnsl::Syscalls;
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>

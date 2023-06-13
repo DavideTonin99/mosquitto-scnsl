@@ -18,13 +18,15 @@ Contributors:
 
 #include "config.h"
 
+
 #ifndef WIN32
 //#include <arpa/inet.h>
-#include <ifaddrs.h>
+//#include <ifaddrs.h>
 //#include <netdb.h>
 //# include <netinet/tcp.h>
-#  include <strings.h>
 //#include <sys/socket.h>
+#  include <strings.h>
+# include "fake_ifaddrs.h"
 #  include <unistd.h>
 #else
 #  include <winsock2.h>
@@ -931,7 +933,7 @@ int net__socket_get_address(mosq_sock_t sock, char *buf, size_t len, uint16_t *r
 
 	memset(&addr, 0, sizeof(struct sockaddr_storage));
 	addrlen = sizeof(addr);
-	if(!getpeername(sock, (struct sockaddr *)&addr, &addrlen)){
+	if(!getpeername(sock, (struct sockaddr_storage *)&addr, &addrlen)){
 		if(addr.ss_family == AF_INET){
 			if(remote_port){
 				*remote_port = ntohs(((struct sockaddr_in *)&addr)->sin_port);

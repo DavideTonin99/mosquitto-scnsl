@@ -40,6 +40,8 @@ Contributors:
 #include <string.h>
 #ifndef WIN32
 //#include <sys/socket.h>
+#include <scnsl.hh>
+using namespace Scnsl::Syscalls;
 #endif
 #include <time.h>
 

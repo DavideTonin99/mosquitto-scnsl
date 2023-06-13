@@ -177,7 +177,7 @@ mux_epoll.o : mux_epoll.c mosquitto_broker_internal.h
 mux_poll.o : mux_poll.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-net.o : net.c mosquitto_broker_internal.h
+net.o : net.c mosquitto_broker_internal.h fake_ifaddrs.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 net_mosq_ocsp.o : ../lib/net_mosq_ocsp.c ../lib/net_mosq.h
