@@ -17,7 +17,8 @@ Contributors:
 */
 
 #include "config.h"
-
+#include <scnsl.hh>
+using namespace Scnsl::Syscalls;
 
 #ifndef WIN32
 //#include <arpa/inet.h>
@@ -26,7 +27,6 @@ Contributors:
 //# include <netinet/tcp.h>
 //#include <sys/socket.h>
 #  include <strings.h>
-# include "fake_ifaddrs.h"
 #  include <unistd.h>
 #else
 #  include <winsock2.h>
