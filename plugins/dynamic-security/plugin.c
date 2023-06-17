@@ -19,7 +19,6 @@ Contributors:
 #include "config.h"
 
 #include <cjson/cJSON.h>
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -452,7 +451,7 @@ void dynsec__config_save(void)
 
 	/* Save to file */
 	file_path_len = strlen(config_file) + 1;
-	file_path = (char*)mosquitto_malloc(file_path_len);
+	file_path = mosquitto_malloc(file_path_len);
 	if(file_path == NULL){
 		mosquitto_free(json_str);
 		mosquitto_log_printf(MOSQ_LOG_ERR, "Error saving Dynamic security plugin config: Out of memory.\n");

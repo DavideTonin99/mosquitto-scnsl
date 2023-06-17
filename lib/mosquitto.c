@@ -18,13 +18,9 @@ Contributors:
 
 #include "config.h"
 
-#include <errno.h>
 #include <signal.h>
 #include <string.h>
-#ifndef WIN32
-#include <sys/time.h>
 #include <strings.h>
-#endif
 
 #if defined(__APPLE__)
 #  include <mach/mach_time.h>
@@ -112,9 +108,6 @@ struct mosquitto *mosquitto_new(const char *id, bool clean_start, void *userdata
 	mosq = (struct mosquitto *)mosquitto__calloc(1, sizeof(struct mosquitto));
 	if(mosq){
 		mosq->sock = INVALID_SOCKET;
-#ifdef WITH_THREADING
-		mosq->thread_id = pthread_self();
-#endif
 		mosq->sockpairR = INVALID_SOCKET;
 		mosq->sockpairW = INVALID_SOCKET;
 		rc = mosquitto_reinitialise(mosq, id, clean_start, userdata);
@@ -195,27 +188,7 @@ int mosquitto_reinitialise(struct mosquitto *mosq, const char *id, bool clean_st
 	mosq->reconnect_delay_max = 1;
 	mosq->reconnect_exponential_backoff = false;
 	mosq->threaded = mosq_ts_none;
-#ifdef WITH_TLS
-	mosq->ssl = NULL;
-	mosq->ssl_ctx = NULL;
-	mosq->ssl_ctx_defaults = true;
-	mosq->tls_cert_reqs = SSL_VERIFY_PEER;
-	mosq->tls_insecure = false;
-	mosq->want_write = false;
-	mosq->tls_ocsp_required = false;
-#endif
-#ifdef WITH_THREADING
-	pthread_mutex_init(&mosq->callback_mutex, NULL);
-	pthread_mutex_init(&mosq->log_callback_mutex, NULL);
-	pthread_mutex_init(&mosq->state_mutex, NULL);
-	pthread_mutex_init(&mosq->out_packet_mutex, NULL);
-	pthread_mutex_init(&mosq->current_out_packet_mutex, NULL);
-	pthread_mutex_init(&mosq->msgtime_mutex, NULL);
-	pthread_mutex_init(&mosq->msgs_in.mutex, NULL);
-	pthread_mutex_init(&mosq->msgs_out.mutex, NULL);
-	pthread_mutex_init(&mosq->mid_mutex, NULL);
-	mosq->thread_id = pthread_self();
-#endif
+
 	/* This must be after pthread_mutex_init(), otherwise the log mutex may be
 	 * used before being initialised. */
 	if(net__socketpair(&mosq->sockpairR, &mosq->sockpairW)){
@@ -231,30 +204,6 @@ void mosquitto__destroy(struct mosquitto *mosq)
 {
 	if(!mosq) return;
 
-#ifdef WITH_THREADING
-#  ifdef HAVE_PTHREAD_CANCEL
-	if(mosq->threaded == mosq_ts_self && !pthread_equal(mosq->thread_id, pthread_self())){
-		pthread_cancel(mosq->thread_id);
-		pthread_join(mosq->thread_id, NULL);
-		mosq->threaded = mosq_ts_none;
-	}
-#  endif
-
-	if(mosq->id){
-		/* If mosq->id is not NULL then the client has already been initialised
-		 * and so the mutexes need destroying. If mosq->id is NULL, the mutexes
-		 * haven't been initialised. */
-		pthread_mutex_destroy(&mosq->callback_mutex);
-		pthread_mutex_destroy(&mosq->log_callback_mutex);
-		pthread_mutex_destroy(&mosq->state_mutex);
-		pthread_mutex_destroy(&mosq->out_packet_mutex);
-		pthread_mutex_destroy(&mosq->current_out_packet_mutex);
-		pthread_mutex_destroy(&mosq->msgtime_mutex);
-		pthread_mutex_destroy(&mosq->msgs_in.mutex);
-		pthread_mutex_destroy(&mosq->msgs_out.mutex);
-		pthread_mutex_destroy(&mosq->mid_mutex);
-	}
-#endif
 	if(mosq->sock != INVALID_SOCKET){
 		net__socket_close(mosq);
 	}

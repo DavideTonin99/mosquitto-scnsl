@@ -26,11 +26,9 @@ Contributors:
 #endif
 
 #include <assert.h>
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #ifndef WIN32
 #include <unistd.h>
 #else
@@ -383,11 +381,11 @@ static int json_print(const struct mosquitto_message *message, const mosquitto_p
 	}
 	if(escaped){
 		fputs("\"payload\":\"", stdout);
-		write_json_payload(message->payload, message->payloadlen);
+		write_json_payload((const char*)(message->payload), message->payloadlen);
 		fputs("\"}", stdout);
 	}else{
 		fputs("\"payload\":", stdout);
-		write_payload(message->payload, message->payloadlen, 0, 0, 0, 0, 0);
+		write_payload((const unsigned char*)(message->payload), message->payloadlen, 0, 0, 0, 0, 0);
 		fputs("}", stdout);
 	}
 
@@ -581,7 +579,7 @@ static void formatted_print_percent(const struct mosq_config *lcfg, const struct
 			break;
 
 		case 'p':
-			write_payload(message->payload, message->payloadlen, 0, align, pad, field_width, precision);
+			write_payload((const unsigned char*)(message->payload), message->payloadlen, 0, align, pad, field_width, precision);
 			break;
 
 		case 'q':
@@ -628,11 +626,11 @@ static void formatted_print_percent(const struct mosq_config *lcfg, const struct
 			break;
 
 		case 'x':
-			write_payload(message->payload, message->payloadlen, 1, align, pad, field_width, precision);
+			write_payload((const unsigned char*)(message->payload), message->payloadlen, 1, align, pad, field_width, precision);
 			break;
 
 		case 'X':
-			write_payload(message->payload, message->payloadlen, 2, align, pad, field_width, precision);
+			write_payload((const unsigned char*)(message->payload), message->payloadlen, 2, align, pad, field_width, precision);
 			break;
 	}
 }
@@ -811,7 +809,7 @@ void print_message(struct mosq_config *lcfg, const struct mosquitto_message *mes
 	}else if(lcfg->verbose){
 		if(message->payloadlen){
 			printf("%s ", message->topic);
-			write_payload(message->payload, message->payloadlen, false, 0, 0, 0, 0);
+			write_payload((const unsigned char*)(message->payload), message->payloadlen, false, 0, 0, 0, 0);
 			if(lcfg->eol){
 				printf("\n");
 			}
@@ -823,7 +821,7 @@ void print_message(struct mosq_config *lcfg, const struct mosquitto_message *mes
 		fflush(stdout);
 	}else{
 		if(message->payloadlen){
-			write_payload(message->payload, message->payloadlen, false, 0, 0, 0, 0);
+			write_payload((const unsigned char*)(message->payload), message->payloadlen, false, 0, 0, 0, 0);
 			if(lcfg->eol){
 				printf("\n");
 			}

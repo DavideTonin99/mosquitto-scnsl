@@ -39,12 +39,11 @@ Contributors:
 #include <ws2tcpip.h>
 #endif
 
-#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #ifndef WIN32
-#  include <sys/socket.h>
+//#include <sys/socket.h>
 #endif
 #include <time.h>
 
@@ -202,11 +201,11 @@ int mux_epoll__handle(void)
 		break;
 	default:
 		for(i=0; i<event_count; i++){
-			context = ep_events[i].data.ptr;
+			context = (mosquitto*)(ep_events[i].data.ptr);
 			if(context->ident == id_client){
 				loop_handle_reads_writes(context, ep_events[i].events);
 			}else if(context->ident == id_listener){
-				listensock = ep_events[i].data.ptr;
+				listensock = (mosquitto__listener_sock*)(ep_events[i].data.ptr);
 
 				if (ep_events[i].events & (EPOLLIN | EPOLLPRI)){
 					while((context = net__socket_accept(listensock)) != NULL){

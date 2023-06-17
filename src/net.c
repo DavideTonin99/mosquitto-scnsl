@@ -17,41 +17,12 @@ Contributors:
 */
 
 #include "config.h"
-
-#ifndef WIN32
-#  include <arpa/inet.h>
-#  include <ifaddrs.h>
-#  include <netdb.h>
-#  include <netinet/tcp.h>
-#  include <strings.h>
-#  include <sys/socket.h>
-#  include <unistd.h>
-#else
-#  include <winsock2.h>
-#  include <ws2tcpip.h>
-#endif
+# include <strings.h>
+# include <unistd.h>
 
 #include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef WITH_WRAP
-#  include <tcpd.h>
-#endif
-
-#ifdef HAVE_NETINET_IN_H
-#  include <netinet/in.h>
-#endif
-
-#ifdef WITH_UNIX_SOCKETS
-#  include "sys/stat.h"
-#  include "sys/un.h"
-#endif
-
-#ifdef __QNX__
-#  include <net/netbyte.h>
-#endif
 
 #include "mosquitto_broker_internal.h"
 #include "mqtt_protocol.h"
@@ -59,15 +30,12 @@ Contributors:
 #include "net_mosq.h"
 #include "util_mosq.h"
 
-#ifdef WITH_TLS
-#  include "tls_mosq.h"
-#  include <openssl/err.h>
-static int tls_ex_index_context = -1;
-static int tls_ex_index_listener = -1;
-#endif
 
 #include "sys_tree.h"
-
+#include <scnsl/system_calls/NetworkSyscalls.hh>
+#include <scnsl/protocols/lv4_communicator/Socket_t.hh>
+using namespace Scnsl::Syscalls;
+using namespace Scnsl::Protocols::Network_Lv4;
 /* For EMFILE handling */
 static mosq_sock_t spare_sock = INVALID_SOCKET;
 
@@ -75,9 +43,6 @@ void net__broker_init(void)
 {
 	spare_sock = socket(AF_INET, SOCK_STREAM, 0);
 	net__init();
-#ifdef WITH_TLS
-	net__init_tls();
-#endif
 }
 
 
@@ -280,7 +245,7 @@ static unsigned int psk_server_callback(SSL *ssl, const char *identity, unsigned
 
 	/* The hex to BN conversion results in the length halving, so we can pass
 	 * max_psk_len*2 as the max hex key here. */
-	psk_key = (char*)mosquitto__calloc(1, (size_t)max_psk_len*2 + 1);
+	psk_key = mosquitto__calloc(1, (size_t)max_psk_len*2 + 1);
 	if(!psk_key) return 0;
 
 	if(mosquitto_psk_key_get(context, psk_hint, identity, psk_key, (int)max_psk_len*2) != MOSQ_ERR_SUCCESS){
@@ -926,37 +891,19 @@ int net__socket_listen(struct mosquitto__listener *listener)
 
 int net__socket_get_address(mosq_sock_t sock, char *buf, size_t len, uint16_t *remote_port)
 {
-	struct sockaddr_storage addr;
+	struct sockaddr addr;
 	socklen_t addrlen;
 
-	memset(&addr, 0, sizeof(struct sockaddr_storage));
+	memset(&addr, 0, sizeof(struct sockaddr));
 	addrlen = sizeof(addr);
 	if(!getpeername(sock, (struct sockaddr *)&addr, &addrlen)){
 		if(addr.ss_family == AF_INET){
 			if(remote_port){
-				*remote_port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+				*remote_port = ntohs(addr.sin_port);
 			}
-			if(inet_ntop(AF_INET, &((struct sockaddr_in *)&addr)->sin_addr.s_addr, buf, (socklen_t)len)){
+			if(inet_ntop(AF_INET, &((struct sockaddr *)&addr)->sin_addr.s_addr, buf, (socklen_t)len)){
 				return 0;
 			}
-		}else if(addr.ss_family == AF_INET6){
-			if(remote_port){
-				*remote_port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
-			}
-			if(inet_ntop(AF_INET6, &((struct sockaddr_in6 *)&addr)->sin6_addr.s6_addr, buf, (socklen_t)len)){
-				return 0;
-			}
-#ifdef WITH_UNIX_SOCKETS
-		}else if(addr.ss_family == AF_UNIX){
-			struct sockaddr_un un;
-			addrlen = sizeof(struct sockaddr_un);
-			if(!getsockname(sock, (struct sockaddr *)&un, &addrlen)){
-				snprintf(buf, len, "%s", un.sun_path);
-			}else{
-				snprintf(buf, len, "unix-socket");
-			}
-			return 0;
-#endif
 		}
 	}
 	return 1;

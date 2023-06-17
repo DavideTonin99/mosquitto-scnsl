@@ -23,7 +23,6 @@ Contributors:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #ifdef WIN32
 #else
@@ -32,8 +31,8 @@ Contributors:
 
 #ifndef WIN32
 #  include <strings.h>
-#  include <netdb.h>
-#  include <sys/socket.h>
+//#include <netdb.h>
+//#include <sys/socket.h>
 #else
 #  include <winsock2.h>
 #  include <ws2tcpip.h>

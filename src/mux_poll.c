@@ -34,18 +34,9 @@ Contributors:
 #include <ws2tcpip.h>
 #endif
 
-#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
-#ifndef WIN32
-#  include <sys/socket.h>
-#endif
-#include <time.h>
-
-#ifdef WITH_WEBSOCKETS
-#  include <libwebsockets.h>
-#endif
 
 #include "mosquitto_broker_internal.h"
 #include "memory_mosq.h"
@@ -55,6 +46,10 @@ Contributors:
 #include "time_mosq.h"
 #include "util_mosq.h"
 #include "mux.h"
+
+#include <scnsl/system_calls/NetworkSyscalls.hh>
+using namespace Scnsl::Syscalls;
+
 
 static void loop_handle_reads_writes(void);
 
@@ -84,7 +79,7 @@ int mux_poll__init(struct mosquitto__listener_sock *listensock, int listensock_c
 	pollfd_max = (size_t)sysconf(_SC_OPEN_MAX);
 #endif
 
-	pollfds = mosquitto__calloc(pollfd_max, sizeof(struct pollfd));
+	pollfds = (struct pollfd*)mosquitto__calloc(pollfd_max, sizeof(struct pollfd));
 	if(!pollfds){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;
@@ -205,7 +200,7 @@ int mux_poll__handle(struct mosquitto__listener_sock *listensock, int listensock
 #endif
 
 	db.now_s = mosquitto_time();
-	db.now_real_s = time(NULL);
+	db.now_real_s = Scnsl::Syscalls::time(NULL);
 
 	if(fdcount == -1){
 #  ifdef WIN32

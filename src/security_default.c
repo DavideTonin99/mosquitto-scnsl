@@ -62,7 +62,7 @@ int mosquitto_security_init_default(bool reload)
 			db.config->listeners[i].security_options.pid->listener = &db.config->listeners[i];
 		}
 	}else{
-		db.config->security_options.pid =(mosquitto_plugin_id_t*) mosquitto__calloc(1, sizeof(mosquitto_plugin_id_t));
+		db.config->security_options.pid = (mosquitto_plugin_id_t*)mosquitto__calloc(1, sizeof(mosquitto_plugin_id_t));
 		if(db.config->security_options.pid == NULL){
 			log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 			return MOSQ_ERR_NOMEM;
@@ -232,7 +232,7 @@ static int add__acl(struct mosquitto__security_options *security_opts, const cha
 		}
 	}
 	if(!acl_user){
-		acl_user = (struct mosquitto__acl_user*) mosquitto__malloc(sizeof(struct mosquitto__acl_user));
+		acl_user = (struct mosquitto__acl_user*)mosquitto__malloc(sizeof(struct mosquitto__acl_user));
 		if(!acl_user){
 			mosquitto__free(local_topic);
 			return MOSQ_ERR_NOMEM;
@@ -252,7 +252,7 @@ static int add__acl(struct mosquitto__security_options *security_opts, const cha
 		acl_user->acl = NULL;
 	}
 
-	acl = (struct mosquitto__acl*) mosquitto__malloc(sizeof(struct mosquitto__acl));
+	acl = (struct mosquitto__acl*)mosquitto__malloc(sizeof(struct mosquitto__acl));
 	if(!acl){
 		mosquitto__free(local_topic);
 		mosquitto__free(acl_user->username);
@@ -311,7 +311,7 @@ static int add__acl_pattern(struct mosquitto__security_options *security_opts, c
 		return MOSQ_ERR_NOMEM;
 	}
 
-	acl = (struct mosquitto__acl*) mosquitto__malloc(sizeof(struct mosquitto__acl));
+	acl = (struct mosquitto__acl*)mosquitto__malloc(sizeof(struct mosquitto__acl));
 	if(!acl){
 		mosquitto__free(local_topic);
 		return MOSQ_ERR_NOMEM;
@@ -367,7 +367,7 @@ static int add__acl_pattern(struct mosquitto__security_options *security_opts, c
 
 static int mosquitto_acl_check_default(int event, void *event_data, void *userdata)
 {
-	struct mosquitto_evt_acl_check *ed = event_data;
+	struct mosquitto_evt_acl_check *ed = (struct mosquitto_evt_acl_check*)event_data;
 	char *local_acl;
 	struct mosquitto__acl *acl_root;
 	bool result;
@@ -463,7 +463,7 @@ static int mosquitto_acl_check_default(int event, void *event_data, void *userda
 			ulen = 0;
 			len = tlen + (size_t)acl_root->ccount*(clen-2);
 		}
-		local_acl =(char*) mosquitto__malloc(len+1);
+		local_acl = (char*)mosquitto__malloc(len+1);
 		if(!local_acl) return MOSQ_ERR_NOMEM;
 		s = local_acl;
 		for(i=0; i<tlen; i++){
@@ -524,7 +524,7 @@ static int aclfile__parse(struct mosquitto__security_options *security_opts)
 	if(!security_opts) return MOSQ_ERR_INVAL;
 	if(!security_opts->acl_file) return MOSQ_ERR_SUCCESS;
 
-	buf =(char*) mosquitto__malloc((size_t)buflen);
+	buf = (char*)mosquitto__malloc((size_t)buflen);
 	if(buf == NULL){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;
@@ -749,7 +749,7 @@ static int pwfile__parse(const char *file, struct mosquitto__unpwd **root)
 	char *buf;
 	int buflen = 256;
 
-	buf =(char*) mosquitto__malloc((size_t)buflen);
+	buf = (char*)mosquitto__malloc((size_t)buflen);
 	if(buf == NULL){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Out of memory.");
 		return MOSQ_ERR_NOMEM;
@@ -991,7 +991,7 @@ static int mosquitto__memcmp_const(const void *a, const void *b, size_t len)
 
 static int mosquitto_unpwd_check_default(int event, void *event_data, void *userdata)
 {
-	struct mosquitto_evt_basic_auth *ed = event_data;
+	struct mosquitto_evt_basic_auth *ed = (struct mosquitto_evt_basic_auth*)event_data;
 	struct mosquitto__unpwd *u;
 	struct mosquitto__unpwd *unpwd_ref;
 #ifdef WITH_TLS
@@ -1225,7 +1225,7 @@ int mosquitto_security_apply_default(void)
 					X509_NAME_print_ex(subject_bio, X509_get_subject_name(client_cert), 0, XN_FLAG_RFC2253);
 					data_start = NULL;
 					name_length = (size_t)BIO_get_mem_data(subject_bio, &data_start);
-					subject =(char*) mosquitto__malloc(sizeof(char)*name_length+1);
+					subject = mosquitto__malloc(sizeof(char)*name_length+1);
 					if(!subject){
 						BIO_free(subject_bio);
 						X509_free(client_cert);

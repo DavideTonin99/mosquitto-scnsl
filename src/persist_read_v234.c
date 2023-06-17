@@ -21,15 +21,13 @@ Contributors:
 #ifdef WITH_PERSISTENCE
 
 #ifndef WIN32
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #endif
 #include <assert.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 
 #include "mosquitto_broker_internal.h"
 #include "memory_mosq.h"

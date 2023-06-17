@@ -34,7 +34,7 @@ int send__suback(struct mosquitto *context, uint16_t mid, uint32_t payloadlen, c
 
 	log__printf(NULL, MOSQ_LOG_DEBUG, "Sending SUBACK to %s", context->id);
 
-	packet =(struct mosquitto__packet*) mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	packet->command = CMD_SUBACK;

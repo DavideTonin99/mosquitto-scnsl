@@ -109,7 +109,7 @@ int dynsec_clientlist__add(struct dynsec__clientlist **base_clientlist, struct d
 		return MOSQ_ERR_SUCCESS;
 	}
 
-	clientlist =(struct dynsec__clientlist*) mosquitto_malloc(sizeof(struct dynsec__clientlist));
+	clientlist = mosquitto_malloc(sizeof(struct dynsec__clientlist));
 	if(clientlist == NULL){
 		return MOSQ_ERR_NOMEM;
 	}

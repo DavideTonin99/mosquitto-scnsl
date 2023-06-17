@@ -75,7 +75,7 @@ int base64__encode(unsigned char *in, unsigned int in_len, char **encoded)
 		return 1;
 	}
 	BIO_get_mem_ptr(b64, &bptr);
-	*encoded = (char*)malloc(bptr->length+1);
+	*encoded = malloc(bptr->length+1);
 	if(!(*encoded)){
 		BIO_free_all(b64);
 		return 1;
@@ -114,7 +114,7 @@ int base64__decode(char *in, unsigned char **decoded, unsigned int *decoded_len)
 		BIO_free_all(b64);
 		return 1;
 	}
-	*decoded = (unsigned char *)mosquitto_calloc(slen, 1);
+	*decoded = mosquitto_calloc(slen, 1);
 	if(!(*decoded)){
 		BIO_free_all(b64);
 		return 1;

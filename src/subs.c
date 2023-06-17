@@ -251,7 +251,7 @@ static int sub__add_shared(struct mosquitto *context, const char *sub, uint8_t q
 			}
 		}
 		if(i == context->sub_count){
-			subs = (struct mosquitto__client_sub **)mosquitto__realloc(context->subs, sizeof(struct mosquitto__client_sub *)*(size_t)(context->sub_count + 1));
+			subs = (struct mosquitto__client_sub**)mosquitto__realloc(context->subs, sizeof(struct mosquitto__client_sub *)*(size_t)(context->sub_count + 1));
 			if(!subs){
 				sub__remove_shared_leaf(subhier, shared, newleaf);
 				mosquitto__free(newleaf);
@@ -293,7 +293,7 @@ static int sub__add_normal(struct mosquitto *context, const char *sub, uint8_t q
 
 	if(rc != MOSQ_ERR_SUB_EXISTS){
 		slen = strlen(sub);
-		csub = mosquitto__calloc(1, sizeof(struct mosquitto__client_sub) + slen + 1);
+		csub = (struct mosquitto__client_sub*)mosquitto__calloc(1, sizeof(struct mosquitto__client_sub) + slen + 1);
 		if(csub == NULL) return MOSQ_ERR_NOMEM;
 		memcpy(csub->topic_filter, sub, slen);
 		csub->hier = subhier;
@@ -306,7 +306,7 @@ static int sub__add_normal(struct mosquitto *context, const char *sub, uint8_t q
 			}
 		}
 		if(i == context->sub_count){
-			subs = (struct mosquitto__client_sub **)mosquitto__realloc(context->subs, sizeof(struct mosquitto__client_sub *)*(size_t)(context->sub_count + 1));
+			subs = (struct mosquitto__client_sub**)mosquitto__realloc(context->subs, sizeof(struct mosquitto__client_sub *)*(size_t)(context->sub_count + 1));
 			if(!subs){
 				DL_DELETE(subhier->subs, newleaf);
 				mosquitto__free(newleaf);

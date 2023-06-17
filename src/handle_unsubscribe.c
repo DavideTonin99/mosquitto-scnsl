@@ -143,7 +143,7 @@ int handle__unsubscribe(struct mosquitto *context)
 		reason_codes[reason_code_count] = reason;
 		reason_code_count++;
 		if(reason_code_count == reason_code_max){
-			reason_tmp = (uint8_t*) mosquitto__realloc(reason_codes, (size_t)(reason_code_max*2));
+			reason_tmp = (uint8_t*)mosquitto__realloc(reason_codes, (size_t)(reason_code_max*2));
 			if(!reason_tmp){
 				mosquitto__free(reason_codes);
 				return MOSQ_ERR_NOMEM;

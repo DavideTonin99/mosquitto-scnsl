@@ -120,7 +120,7 @@ int mosquitto_publish_v5(struct mosquitto *mosq, int *mid, const char *topic, in
 			rc = mosquitto_property_copy_all(&properties_copy, outgoing_properties);
 			if(rc) return rc;
 		}
-		message = (struct mosquitto_message_all* )mosquitto__calloc(1, sizeof(struct mosquitto_message_all));
+		message = ((struct mosquitto_message_all *)mosquitto__calloc(1, sizeof(struct mosquitto_message_all)));
 		if(!message){
 			mosquitto_property_free_all(&properties_copy);
 			return MOSQ_ERR_NOMEM;
@@ -155,10 +155,8 @@ int mosquitto_publish_v5(struct mosquitto *mosq, int *mid, const char *topic, in
 		message->dup = false;
 		message->properties = properties_copy;
 
-		pthread_mutex_lock(&mosq->msgs_out.mutex);
 		message->state = mosq_ms_invalid;
 		rc = message__queue(mosq, message, mosq_md_out);
-		pthread_mutex_unlock(&mosq->msgs_out.mutex);
 		return rc;
 	}
 }

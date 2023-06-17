@@ -16,16 +16,13 @@ Contributors:
    Roger Light - initial implementation and documentation.
 */
 
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 
 #include "db_dump.h"
 #include <mosquitto_broker_internal.h>

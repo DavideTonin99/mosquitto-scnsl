@@ -42,7 +42,7 @@ static struct mosquitto__retainhier *retain__add_hier_entry(struct mosquitto__re
 	}
 	child->parent = parent;
 	child->topic_len = len;
-	child->topic =(char*) mosquitto__malloc((size_t)len+1);
+	child->topic = (char*)mosquitto__malloc((size_t)len+1);
 	if(!child->topic){
 		child->topic_len = 0;
 		mosquitto__free(child);

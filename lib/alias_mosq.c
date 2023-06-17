@@ -40,7 +40,7 @@ int alias__add(struct mosquitto *mosq, const char *topic, uint16_t alias)
 	}
 
 	/* New alias */
-	aliases = (struct mosquitto__alias *)mosquitto__realloc(mosq->aliases, sizeof(struct mosquitto__alias)*(size_t)(mosq->alias_count+1));
+	aliases = (struct mosquitto__alias*)mosquitto__realloc(mosq->aliases, sizeof(struct mosquitto__alias)*(size_t)(mosq->alias_count+1));
 	if(!aliases) return MOSQ_ERR_NOMEM;
 
 	mosq->aliases = aliases;

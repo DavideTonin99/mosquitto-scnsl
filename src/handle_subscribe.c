@@ -154,7 +154,7 @@ int handle__subscribe(struct mosquitto *context)
 
 			if(context->listener && context->listener->mount_point){
 				len = strlen(context->listener->mount_point) + slen + 1;
-				sub_mount =(char*) mosquitto__malloc(len+1);
+				sub_mount = (char*)mosquitto__malloc(len+1);
 				if(!sub_mount){
 					mosquitto__free(sub);
 					mosquitto__free(payload);

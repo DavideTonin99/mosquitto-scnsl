@@ -87,10 +87,8 @@ int mosquitto__check_keepalive(struct mosquitto *mosq)
 		return MOSQ_ERR_SUCCESS;
 	}
 #endif
-	pthread_mutex_lock(&mosq->msgtime_mutex);
 	next_msg_out = mosq->next_msg_out;
 	last_msg_in = mosq->last_msg_in;
-	pthread_mutex_unlock(&mosq->msgtime_mutex);
 	if(mosq->keepalive && mosq->sock != INVALID_SOCKET &&
 			(now >= next_msg_out || now - last_msg_in >= mosq->keepalive)){
 
@@ -98,10 +96,8 @@ int mosquitto__check_keepalive(struct mosquitto *mosq)
 		if(state == mosq_cs_active && mosq->ping_t == 0){
 			send__pingreq(mosq);
 			/* Reset last msg times to give the server time to send a pingresp */
-			pthread_mutex_lock(&mosq->msgtime_mutex);
 			mosq->last_msg_in = now;
 			mosq->next_msg_out = now + mosq->keepalive;
-			pthread_mutex_unlock(&mosq->msgtime_mutex);
 		}else{
 #ifdef WITH_BROKER
 #  ifdef WITH_BRIDGE
@@ -118,7 +114,6 @@ int mosquitto__check_keepalive(struct mosquitto *mosq)
 			}else{
 				rc = MOSQ_ERR_KEEPALIVE;
 			}
-			pthread_mutex_lock(&mosq->callback_mutex);
 			if(mosq->on_disconnect){
 				mosq->in_callback = true;
 				mosq->on_disconnect(mosq, mosq->userdata, rc);
@@ -129,7 +124,6 @@ int mosquitto__check_keepalive(struct mosquitto *mosq)
 				mosq->on_disconnect_v5(mosq, mosq->userdata, rc, NULL);
 				mosq->in_callback = false;
 			}
-			pthread_mutex_unlock(&mosq->callback_mutex);
 
 			return rc;
 #endif
@@ -150,11 +144,9 @@ uint16_t mosquitto__mid_generate(struct mosquitto *mosq)
 	uint16_t mid;
 	assert(mosq);
 
-	pthread_mutex_lock(&mosq->mid_mutex);
 	mosq->last_mid++;
 	if(mosq->last_mid == 0) mosq->last_mid++;
 	mid = mosq->last_mid;
-	pthread_mutex_unlock(&mosq->mid_mutex);
 
 	return mid;
 }
@@ -169,7 +161,7 @@ int mosquitto__hex2bin_sha1(const char *hex, unsigned char **bin)
 		return MOSQ_ERR_INVAL;
 	}
 
-	sha =(unsigned char*) mosquitto__malloc(SHA_DIGEST_LENGTH);
+	sha = mosquitto__malloc(SHA_DIGEST_LENGTH);
 	if(!sha){
 		return MOSQ_ERR_NOMEM;
 	}
@@ -280,14 +272,12 @@ int util__random_bytes(void *bytes, int count)
 
 int mosquitto__set_state(struct mosquitto *mosq, enum mosquitto_client_state state)
 {
-	pthread_mutex_lock(&mosq->state_mutex);
 #ifdef WITH_BROKER
 	if(mosq->state != mosq_cs_disused)
 #endif
 	{
 		mosq->state = state;
 	}
-	pthread_mutex_unlock(&mosq->state_mutex);
 
 	return MOSQ_ERR_SUCCESS;
 }
@@ -296,9 +286,7 @@ enum mosquitto_client_state mosquitto__get_state(struct mosquitto *mosq)
 {
 	enum mosquitto_client_state state;
 
-	pthread_mutex_lock(&mosq->state_mutex);
 	state = mosq->state;
-	pthread_mutex_unlock(&mosq->state_mutex);
 
 	return state;
 }
@@ -306,18 +294,14 @@ enum mosquitto_client_state mosquitto__get_state(struct mosquitto *mosq)
 #ifndef WITH_BROKER
 void mosquitto__set_request_disconnect(struct mosquitto *mosq, bool request_disconnect)
 {
-	pthread_mutex_lock(&mosq->state_mutex);
 	mosq->request_disconnect = request_disconnect;
-	pthread_mutex_unlock(&mosq->state_mutex);
 }
 
 bool mosquitto__get_request_disconnect(struct mosquitto *mosq)
 {
 	bool request_disconnect;
 
-	pthread_mutex_lock(&mosq->state_mutex);
 	request_disconnect = mosq->request_disconnect;
-	pthread_mutex_unlock(&mosq->state_mutex);
 
 	return request_disconnect;
 }

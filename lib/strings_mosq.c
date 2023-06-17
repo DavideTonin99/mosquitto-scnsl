@@ -18,7 +18,6 @@ Contributors:
 
 #include "config.h"
 
-#include <errno.h>
 #include <string.h>
 
 #ifndef WIN32
@@ -27,7 +26,8 @@ Contributors:
 
 #include "mosquitto.h"
 #include "mqtt_protocol.h"
-
+#include <scnsl/system_calls/NetworkSyscalls.hh>
+using namespace Scnsl::Syscalls;
 const char *mosquitto_strerror(int mosq_errno)
 {
 	switch(mosq_errno){

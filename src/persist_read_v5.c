@@ -21,15 +21,13 @@ Contributors:
 #ifdef WITH_PERSISTENCE
 
 #ifndef WIN32
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #endif
 #include <assert.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 
 #include "mosquitto_broker_internal.h"
 #include "memory_mosq.h"
@@ -210,7 +208,7 @@ int persist__chunk_msg_store_read_v56(FILE *db_fptr, struct P_msg_store *chunk, 
 
 	if(length > 0){
 		prop_packet.remaining_length = length;
-		prop_packet.payload =(uint8_t) mosquitto__malloc(length);
+		prop_packet.payload = (uint8_t*)mosquitto__malloc(length);
 		if(!prop_packet.payload){
 			mosquitto__free(chunk->source.id);
 			mosquitto__free(chunk->source.username);

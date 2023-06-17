@@ -21,7 +21,7 @@ Contributors:
 #ifdef WITH_PERSISTENCE
 
 #ifndef WIN32
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #endif
 #include <assert.h>
 #include <errno.h>
@@ -111,7 +111,7 @@ int persist__chunk_client_msg_write_v6(FILE *db_fptr, struct P_client_msg *chunk
 		if(proplen > 0){
 			prop_packet.remaining_length = proplen;
 			prop_packet.packet_length = proplen;
-			prop_packet.payload =(uint8_t*) mosquitto__malloc(proplen);
+			prop_packet.payload = (uint8_t*)mosquitto__malloc(proplen);
 			if(!prop_packet.payload){
 				return MOSQ_ERR_NOMEM;
 			}
@@ -177,7 +177,7 @@ int persist__chunk_message_store_write_v6(FILE *db_fptr, struct P_msg_store *chu
 		if(proplen > 0){
 			prop_packet.remaining_length = proplen;
 			prop_packet.packet_length = proplen;
-			prop_packet.payload =(uint8_t) mosquitto__malloc(proplen);
+			prop_packet.payload = (uint8_t*)mosquitto__malloc(proplen);
 			if(!prop_packet.payload){
 				return MOSQ_ERR_NOMEM;
 			}

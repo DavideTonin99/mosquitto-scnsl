@@ -18,8 +18,6 @@ Contributors:
 
 #include "config.h"
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -224,7 +222,7 @@ void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_
 
 int pub_shared_init(void)
 {
-	line_buf = (char*) malloc((size_t )line_buf_len);
+	line_buf = (char*)malloc((size_t )line_buf_len);
 	if(!line_buf){
 		err_printf(&cfg, "Error: Out of memory.\n");
 		return 1;
@@ -277,7 +275,7 @@ static int pub_stdin_line_loop(struct mosquitto *mosq)
 					line_buf_len += 1024;
 					pos += read_len-1;
 					read_len = 1024;
-					buf2 = (char*) realloc(line_buf, (size_t )line_buf_len);
+					buf2 = (char*)realloc(line_buf, (size_t )line_buf_len);
 					if(!buf2){
 						err_printf(&cfg, "Error: Out of memory.\n");
 						return MOSQ_ERR_NOMEM;

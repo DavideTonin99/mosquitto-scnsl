@@ -555,7 +555,7 @@ int db__message_insert(struct mosquitto *context, uint16_t mid, enum mosquitto_m
 	}
 #endif
 
-	msg =(struct mosquitto_client_msg*) mosquitto__malloc(sizeof(struct mosquitto_client_msg));
+	msg = (mosquitto_client_msg*)mosquitto__malloc(sizeof(struct mosquitto_client_msg));
 	if(!msg) return MOSQ_ERR_NOMEM;
 	msg->prev = NULL;
 	msg->next = NULL;
@@ -590,7 +590,7 @@ int db__message_insert(struct mosquitto *context, uint16_t mid, enum mosquitto_m
 		 * multiple times for overlapping subscriptions, although this is only the
 		 * case for SUBSCRIPTION with multiple subs in so is a minor concern.
 		 */
-		dest_ids = (char **)mosquitto__realloc(stored->dest_ids, sizeof(char *)*(size_t)(stored->dest_id_count+1));
+		dest_ids = (char**)mosquitto__realloc(stored->dest_ids, sizeof(char *)*(size_t)(stored->dest_id_count+1));
 		if(dest_ids){
 			stored->dest_ids = dest_ids;
 			stored->dest_id_count++;
@@ -700,7 +700,7 @@ int db__messages_easy_queue(struct mosquitto *context, const char *topic, uint8_
 
 	if(!topic) return MOSQ_ERR_INVAL;
 
-	stored =(struct mosquitto_msg_store*) mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
+	stored = (struct mosquitto_msg_store*)mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
 	if(stored == NULL) return MOSQ_ERR_NOMEM;
 
 	stored->topic = mosquitto__strdup(topic);

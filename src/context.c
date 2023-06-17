@@ -37,7 +37,7 @@ struct mosquitto *context__init(mosq_sock_t sock)
 	struct mosquitto *context;
 	char address[1024];
 
-	context = (struct mosquitto*) mosquitto__calloc(1, sizeof(struct mosquitto));
+	context = (mosquitto*)mosquitto__calloc(1, sizeof(struct mosquitto));
 	if(!context) return NULL;
 
 #ifdef WITH_EPOLL

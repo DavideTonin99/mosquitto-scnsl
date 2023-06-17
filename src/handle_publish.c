@@ -211,7 +211,7 @@ int handle__publish(struct mosquitto *context)
 	G_PUB_BYTES_RECEIVED_INC(msg->payloadlen);
 	if(context->listener && context->listener->mount_point){
 		len = strlen(context->listener->mount_point) + strlen(msg->topic) + 1;
-		topic_mount =(char*) mosquitto__malloc(len+1);
+		topic_mount = (char*)mosquitto__malloc(len+1);
 		if(!topic_mount){
 			db__msg_store_free(msg);
 			return MOSQ_ERR_NOMEM;

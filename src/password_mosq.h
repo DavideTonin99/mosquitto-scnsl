@@ -17,8 +17,8 @@ SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
 Contributors:
    Roger Light - initial implementation and documentation.
 */
-
 #include <stdbool.h>
+#include <stddef.h>
 
 enum mosquitto_pwhash_type{
 	pw_sha512 = 6,

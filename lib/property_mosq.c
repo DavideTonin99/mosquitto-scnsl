@@ -19,7 +19,6 @@ Contributors:
 #include "config.h"
 
 #include <assert.h>
-#include <errno.h>
 #include <string.h>
 
 #ifndef WIN32
@@ -163,7 +162,7 @@ int property__read_all(int command, struct mosquitto__packet *packet, mosquitto_
 	/* The order of properties must be preserved for some types, so keep the
 	 * same order for all */
 	while(proplen > 0){
-		p =(mosquitto_property*) mosquitto__calloc(1, sizeof(mosquitto_property));
+		p = (mosquitto_property*) mosquitto__calloc(1, sizeof(mosquitto_property));
 		if(!p){
 			mosquitto_property_free_all(properties);
 			return MOSQ_ERR_NOMEM;
@@ -750,7 +749,7 @@ int mosquitto_property_add_int16(mosquitto_property **proplist, int identifier, 
 		return MOSQ_ERR_INVAL;
 	}
 
-	prop = (mosquitto_property*) mosquitto__calloc(1, sizeof(mosquitto_property));
+	prop = (mosquitto_property*)mosquitto__calloc(1, sizeof(mosquitto_property));
 	if(!prop) return MOSQ_ERR_NOMEM;
 
 	prop->client_generated = true;
@@ -775,7 +774,7 @@ int mosquitto_property_add_int32(mosquitto_property **proplist, int identifier, 
 		return MOSQ_ERR_INVAL;
 	}
 
-	prop =(mosquitto_property*) mosquitto__calloc(1, sizeof(mosquitto_property));
+	prop = (mosquitto_property*)mosquitto__calloc(1, sizeof(mosquitto_property));
 	if(!prop) return MOSQ_ERR_NOMEM;
 
 	prop->client_generated = true;
@@ -824,7 +823,7 @@ int mosquitto_property_add_binary(mosquitto_property **proplist, int identifier,
 	prop->identifier = identifier;
 
 	if(len){
-		prop->value.bin.v =(char*) mosquitto__malloc(len);
+		prop->value.bin.v = (char*)mosquitto__malloc(len);
 		if(!prop->value.bin.v){
 			mosquitto__free(prop);
 			return MOSQ_ERR_NOMEM;
@@ -895,7 +894,7 @@ int mosquitto_property_add_string_pair(mosquitto_property **proplist, int identi
 		if(mosquitto_validate_utf8(value, (int)slen_value)) return MOSQ_ERR_MALFORMED_UTF8;
 	}
 
-	prop =(mosquitto_property*) mosquitto__calloc(1, sizeof(mosquitto_property));
+	prop = (mosquitto_property*)mosquitto__calloc(1, sizeof(mosquitto_property));
 	if(!prop) return MOSQ_ERR_NOMEM;
 
 	prop->client_generated = true;
@@ -1196,7 +1195,7 @@ int mosquitto_property_copy_all(mosquitto_property **dest, const mosquitto_prope
 	*dest = NULL;
 
 	while(src){
-		pnew =(mosquitto_property*) calloc(1, sizeof(mosquitto_property));
+		pnew = (mosquitto_property*)calloc(1, sizeof(mosquitto_property));
 		if(!pnew){
 			mosquitto_property_free_all(dest);
 			return MOSQ_ERR_NOMEM;

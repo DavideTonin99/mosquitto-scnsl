@@ -15,6 +15,8 @@ SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
 Contributors:
    Roger Light - initial implementation and documentation.
 */
+#include <scnsl/system_calls/TimedSyscalls.hh>
+using namespace Scnsl::Syscalls;
 
 #ifndef TIME_MOSQ_H
 #define TIME_MOSQ_H

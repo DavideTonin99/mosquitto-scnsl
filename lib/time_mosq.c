@@ -31,10 +31,11 @@ Contributors:
 #else
 #  include <unistd.h>
 #endif
-#include <time.h>
 
 #include "mosquitto.h"
 #include "time_mosq.h"
+#include <scnsl/system_calls/TimedSyscalls.hh>
+using namespace Scnsl::Syscalls;
 
 time_t mosquitto_time(void)
 {
@@ -43,7 +44,7 @@ time_t mosquitto_time(void)
 #elif _POSIX_TIMERS>0 && defined(_POSIX_MONOTONIC_CLOCK)
 	struct timespec tp;
 
-	clock_gettime(CLOCK_MONOTONIC, &tp);
+	Scnsl::Syscalls::clock_gettime(CLOCK_MONOTONIC, &tp);
 	return tp.tv_sec;
 #elif defined(__APPLE__)
 	static mach_timebase_info_data_t tb;

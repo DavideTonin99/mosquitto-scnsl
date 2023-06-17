@@ -19,7 +19,6 @@ Contributors:
 #include "config.h"
 
 #include <ctype.h>
-#include <errno.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <signal.h>

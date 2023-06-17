@@ -18,8 +18,6 @@ Contributors:
 
 #include "config.h"
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,7 +58,7 @@ int load_stdin(void)
 
 	while(!feof(stdin)){
 		rlen = fread(buf, 1, 1024, stdin);
-		aux_message =(char*) realloc(cfg.message, pos+rlen);
+		aux_message = (char*)realloc(cfg.message, pos+rlen);
 		if(!aux_message){
 			err_printf(&cfg, "Error: Out of memory.\n");
 			free(cfg.message);
@@ -118,7 +116,7 @@ int load_file(const char *filename)
 	}
 	cfg.msglen = (int )flen;
 	fseek(fptr, 0, SEEK_SET);
-	cfg.message =(char*) malloc((size_t )cfg.msglen);
+	cfg.message = (char*)malloc((size_t )cfg.msglen);
 	if(!cfg.message){
 		fclose(fptr);
 		err_printf(&cfg, "Error: Out of memory.\n");

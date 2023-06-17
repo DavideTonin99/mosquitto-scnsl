@@ -20,15 +20,13 @@ Contributors:
 #include "config.h"
 
 #include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #ifndef WIN32
 #define _GNU_SOURCE
-#include <netdb.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
+//#include <netdb.h>
+//# include <netinet/tcp.h>
+//#include <sys/socket.h>
 #include <unistd.h>
 #else
 #include <winsock2.h>
@@ -76,6 +74,10 @@ Contributors:
 #include "net_mosq.h"
 #include "time_mosq.h"
 #include "util_mosq.h"
+#include <scnsl/system_calls/NetworkSyscalls.hh>
+#include <scnsl/protocols/lv4_communicator/Socket_t.hh>
+using namespace Scnsl::Syscalls;
+using namespace Scnsl::Protocols::Network_Lv4;
 
 #ifdef WITH_TLS
 int tls_ex_index_mosq = -1;
@@ -987,7 +989,7 @@ ssize_t net__read(struct mosquitto *mosq, void *buf, size_t count)
 #endif
 
 #ifndef WIN32
-	return read(mosq->sock, buf, count);
+	return Scnsl::Syscalls::read(mosq->sock, buf, count);
 #else
 	return recv(mosq->sock, buf, count, 0);
 #endif

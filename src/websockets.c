@@ -34,7 +34,7 @@ Contributors:
 #include <sys/stat.h>
 
 #ifndef WIN32
-#  include <sys/socket.h>
+//#include <sys/socket.h>
 #endif
 
 /* Be careful if changing these, if TX is not bigger than SERV then there can

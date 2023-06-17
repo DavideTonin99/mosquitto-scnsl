@@ -95,7 +95,7 @@ int send__connect(struct mosquitto *mosq, uint16_t keepalive, bool clean_session
 		return MOSQ_ERR_INVAL;
 	}
 
-	packet = (struct mosquitto__packet*) mosquitto__calloc(1, sizeof(struct mosquitto__packet));
+	packet = (struct mosquitto__packet*)mosquitto__calloc(1, sizeof(struct mosquitto__packet));
 	if(!packet) return MOSQ_ERR_NOMEM;
 
 	if(clientid){

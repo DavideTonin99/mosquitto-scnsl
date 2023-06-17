@@ -31,18 +31,18 @@ Contributors:
 #include "config.h"
 
 #include <stdio.h>
-#include <time.h>
 
 #include "mosquitto_broker.h"
 #include "mosquitto_plugin.h"
 #include "mosquitto.h"
 #include "mqtt_protocol.h"
+#include <scnsl/system_calls/TimedSyscalls.hh>
 
 static mosquitto_plugin_id_t *mosq_pid = NULL;
 
 static int callback_message(int event, void *event_data, void *userdata)
 {
-	struct mosquitto_evt_message *ed = event_data;
+	struct mosquitto_evt_message *ed = (mosquitto_evt_message*) event_data;
 	struct timespec ts;
 	struct tm *ti;
 	char time_buf[25];
@@ -50,7 +50,7 @@ static int callback_message(int event, void *event_data, void *userdata)
 	UNUSED(event);
 	UNUSED(userdata);
 
-	clock_gettime(CLOCK_REALTIME, &ts);
+	Scnsl::Syscalls::clock_gettime(CLOCK_REALTIME, &ts);
 	ti = gmtime(&ts.tv_sec);
 	strftime(time_buf, sizeof(time_buf), "%Y-%m-%dT%H:%M:%SZ", ti);
 

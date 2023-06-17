@@ -53,14 +53,19 @@ set(SRC actions.c
 	util_mosq.c
 	util_topic.c
 	will_mosq.c
+	logging_mosq.c
+	memory_mosq.c
+	messages_mosq.c
+	alias_mosq.c
 	)
 set_source_files_properties(${SRC} PROPERTIES LANGUAGE CXX)
 
 set(C_SRC
 	${SRC}
-	logging_mosq.c logging_mosq.h
-	memory_mosq.c memory_mosq.h
-	messages_mosq.c messages_mosq.h
+	alias_mosq.h
+	 logging_mosq.h
+	   memory_mosq.h
+	 messages_mosq.h
 	misc_mosq.h
 	../include/mosquitto.h
 	mosquitto_internal.h

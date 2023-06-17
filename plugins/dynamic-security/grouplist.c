@@ -105,7 +105,7 @@ int dynsec_grouplist__add(struct dynsec__grouplist **base_grouplist, struct dyns
 		return MOSQ_ERR_SUCCESS;
 	}
 
-	grouplist = (struct dynsec__grouplist*)mosquitto_malloc(sizeof(struct dynsec__grouplist));
+	grouplist = mosquitto_malloc(sizeof(struct dynsec__grouplist));
 	if(grouplist == NULL){
 		return MOSQ_ERR_NOMEM;
 	}

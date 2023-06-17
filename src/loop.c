@@ -24,22 +24,12 @@ Contributors:
 #endif
 
 #include <assert.h>
-#ifndef WIN32
 #include <unistd.h>
-#else
-#include <process.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#endif
 
-#include <errno.h>
+
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
-#ifndef WIN32
-#  include <sys/socket.h>
-#endif
-#include <time.h>
 #include <utlist.h>
 
 #ifdef WITH_WEBSOCKETS
@@ -75,7 +65,7 @@ static int single_publish(struct mosquitto *context, struct mosquitto_message_v5
 	struct mosquitto_msg_store *stored;
 	uint16_t mid;
 
-	stored =(struct mosquitto_msg_store*) mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
+	stored = (struct mosquitto_msg_store*)mosquitto__calloc(1, sizeof(struct mosquitto_msg_store));
 	if(stored == NULL) return MOSQ_ERR_NOMEM;
 
 	stored->topic = msg->topic;
@@ -180,7 +170,7 @@ int mosquitto_main_loop(struct mosquitto__listener_sock *listensock, int listens
 #endif
 
 	db.now_s = mosquitto_time();
-	db.now_real_s = time(NULL);
+	db.now_real_s = Scnsl::Syscalls::time(NULL);
 
 #ifdef WITH_BRIDGE
 	rc = bridge__register_local_connections();

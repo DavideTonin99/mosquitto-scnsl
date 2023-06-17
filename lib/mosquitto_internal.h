@@ -21,46 +21,16 @@ Contributors:
 #define MOSQUITTO_INTERNAL_H
 
 #include "config.h"
+//#include <stdlib.h>
 
-#ifdef WIN32
-#  include <winsock2.h>
-#endif
 
-#ifdef WITH_TLS
-#  include <openssl/ssl.h>
-#else
-#  include <time.h>
-#endif
-#include <stdlib.h>
-
-#if defined(WITH_THREADING) && !defined(WITH_BROKER)
-#  include <pthread.h>
-#else
-#  include <dummypthread.h>
-#endif
-
-#ifdef WITH_SRV
-#  include <ares.h>
-#endif
-
-#ifdef WIN32
-#	if _MSC_VER < 1600
-		typedef unsigned char uint8_t;
-		typedef unsigned short uint16_t;
-		typedef unsigned int uint32_t;
-		typedef unsigned long long uint64_t;
-#	else
-#		include <stdint.h>
-#	endif
-#else
 #	include <stdint.h>
-#endif
 
 #include "mosquitto.h"
 #include "time_mosq.h"
 #ifdef WITH_BROKER
 #  ifdef __linux__
-#    include <netdb.h>
+//#include <netdb.h>
 #  endif
 #  include "uthash.h"
 struct mosquitto_client_msg;
@@ -73,6 +43,12 @@ typedef int mosq_sock_t;
 #endif
 
 #define SAFE_PRINT(A) (A)?(A):"null"
+
+#include <scnsl/system_calls/NetworkSyscalls.hh>
+#include <scnsl/system_calls/TimedSyscalls.hh>
+using namespace Scnsl::Syscalls;
+#define fd_set Scnsl::Syscalls::fd_set
+
 
 enum mosquitto_msg_direction {
 	mosq_md_in = 0,
@@ -203,9 +179,7 @@ struct mosquitto_msg_data{
 #else
 	struct mosquitto_message_all *inflight;
 	int queue_len;
-#  ifdef WITH_THREADING
-	pthread_mutex_t mutex;
-#  endif
+
 #endif
 	int inflight_quota;
 	uint16_t inflight_maximum;
@@ -272,16 +246,7 @@ struct mosquitto {
 	enum mosquitto__keyform tls_keyform;
 #endif
 	bool want_write;
-#if defined(WITH_THREADING) && !defined(WITH_BROKER)
-	pthread_mutex_t callback_mutex;
-	pthread_mutex_t log_callback_mutex;
-	pthread_mutex_t msgtime_mutex;
-	pthread_mutex_t out_packet_mutex;
-	pthread_mutex_t current_out_packet_mutex;
-	pthread_mutex_t state_mutex;
-	pthread_mutex_t mid_mutex;
-	pthread_t thread_id;
-#endif
+
 	bool clean_start;
 	time_t session_expiry_time;
 	uint32_t session_expiry_interval;

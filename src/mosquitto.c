@@ -33,11 +33,7 @@ Contributors:
 #include <ws2tcpip.h>
 #endif
 
-#ifndef WIN32
-#  include <sys/time.h>
-#endif
 
-#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
@@ -55,6 +51,14 @@ Contributors:
 #include "memory_mosq.h"
 #include "misc_mosq.h"
 #include "util_mosq.h"
+
+#include<scnsl/system_calls/NetworkSyscalls.hh>
+#include<scnsl/system_calls/TimedSyscalls.hh>
+using namespace Scnsl::Syscalls;
+
+#define fd_set Scnsl::Syscalls::fd_set
+
+
 
 struct mosquitto_db db;
 
@@ -210,7 +214,7 @@ static int listeners__start_single_mqtt(struct mosquitto__listener *listener)
 		return 1;
 	}
 	listensock_count += listener->sock_count;
-	listensock_new = (struct mosquitto__listener_sock*) mosquitto__realloc(listensock, sizeof(struct mosquitto__listener_sock)*(size_t)listensock_count);
+	listensock_new = (struct mosquitto__listener_sock*)mosquitto__realloc(listensock, sizeof(struct mosquitto__listener_sock)*(size_t)listensock_count);
 	if(!listensock_new){
 		return 1;
 	}
@@ -296,7 +300,7 @@ static int listeners__start_local_only(void)
 	int rc;
 	struct mosquitto__listener *listeners;
 
-	listeners =(struct mosquitto__listener*) mosquitto__realloc(db.config->listeners, 2*sizeof(struct mosquitto__listener));
+	listeners = (struct mosquitto__listener*)mosquitto__realloc(db.config->listeners, 2*sizeof(struct mosquitto__listener));
 	if(listeners == NULL){
 		return MOSQ_ERR_NOMEM;
 	}
@@ -480,7 +484,7 @@ int main(int argc, char *argv[])
 
 	memset(&db, 0, sizeof(struct mosquitto_db));
 	db.now_s = mosquitto_time();
-	db.now_real_s = time(NULL);
+	db.now_real_s = Scnsl::Syscalls::time(NULL);
 
 	net__broker_init();
 

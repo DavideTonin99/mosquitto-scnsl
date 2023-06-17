@@ -19,7 +19,6 @@ Contributors:
 #include "config.h"
 
 #include <assert.h>
-#include <errno.h>
 #include <string.h>
 
 #ifdef WITH_BROKER
@@ -107,7 +106,7 @@ int packet__read_binary(struct mosquitto__packet *packet, uint8_t **data, uint16
 
 	if(packet->pos+slen > packet->remaining_length) return MOSQ_ERR_MALFORMED_PACKET;
 
-	*data = (uint8_t* )mosquitto__malloc(slen+1U);
+	*data = (uint8_t*)mosquitto__malloc(slen+1U);
 	if(*data){
 		memcpy(*data, &(packet->payload[packet->pos]), slen);
 		((uint8_t *)(*data))[slen] = '\0';

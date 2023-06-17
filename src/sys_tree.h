@@ -18,7 +18,7 @@ Contributors:
 
 #ifndef SYS_TREE_H
 #define SYS_TREE_H
-
+#include <cstdint>
 #if defined(WITH_SYS_TREE) && defined(WITH_BROKER)
 extern uint64_t g_bytes_received;
 extern uint64_t g_bytes_sent;
