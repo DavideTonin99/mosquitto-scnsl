@@ -79,15 +79,19 @@ OBJS=	mosquitto.o \
 		websockets.o \
 		will_delay.o \
 		will_mosq.o \
-		xtreport.o
+		xtreport.o \
+		SCNSL_broker.o
 
 mosquitto : ${OBJS}
-	${CROSS_COMPILE}${CXX} ${BROKER_LDFLAGS} $^ -o $@ $(BROKER_LDADD)
+	${CROSS_COMPILE}${CXX} ${BROKER_LDFLAGS} $^ -o $@ -lscnsl -lsystemc $(BROKER_LDADD)
+
+SCNSL_broker.o : SCNSL_broker.cpp SCNSL_broker.hh mosquitto_broker_internal.h
+	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 mosquitto.o : mosquitto.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-alias_mosq.o : ../lib/alias_mosq.c ../lib/alias_mosq.h
+alias_mosq.o : ../lib-broker/alias_mosq.c ../lib-broker/alias_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 bridge.o : bridge.c mosquitto_broker_internal.h
@@ -123,28 +127,28 @@ handle_connect.o : handle_connect.c mosquitto_broker_internal.h
 handle_disconnect.o : handle_disconnect.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_ping.o : ../lib/handle_ping.c ../lib/read_handle.h
+handle_ping.o : ../lib-broker/handle_ping.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_pubackcomp.o : ../lib/handle_pubackcomp.c ../lib/read_handle.h
+handle_pubackcomp.o : ../lib-broker/handle_pubackcomp.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 handle_publish.o : handle_publish.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_pubrec.o : ../lib/handle_pubrec.c ../lib/read_handle.h
+handle_pubrec.o : ../lib-broker/handle_pubrec.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_pubrel.o : ../lib/handle_pubrel.c ../lib/read_handle.h
+handle_pubrel.o : ../lib-broker/handle_pubrel.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_suback.o : ../lib/handle_suback.c ../lib/read_handle.h
+handle_suback.o : ../lib-broker/handle_suback.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 handle_subscribe.o : handle_subscribe.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-handle_unsuback.o : ../lib/handle_unsuback.c ../lib/read_handle.h
+handle_unsuback.o : ../lib-broker/handle_unsuback.c ../lib-broker/read_handle.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 handle_unsubscribe.o : handle_unsubscribe.c mosquitto_broker_internal.h
@@ -159,13 +163,13 @@ logging.o : logging.c mosquitto_broker_internal.h
 loop.o : loop.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-memory_mosq.o : ../lib/memory_mosq.c ../lib/memory_mosq.h
+memory_mosq.o : ../lib-broker/memory_mosq.c ../lib-broker/memory_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 memory_public.o : memory_public.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-misc_mosq.o : ../lib/misc_mosq.c ../lib/misc_mosq.h
+misc_mosq.o : ../lib-broker/misc_mosq.c ../lib-broker/misc_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 mux.o : mux.c mosquitto_broker_internal.h
@@ -177,13 +181,13 @@ mux_epoll.o : mux_epoll.c mosquitto_broker_internal.h
 mux_poll.o : mux_poll.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-net.o : net.c mosquitto_broker_internal.h 
+net.o : net.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-net_mosq_ocsp.o : ../lib/net_mosq_ocsp.c ../lib/net_mosq.h
+net_mosq_ocsp.o : ../lib-broker/net_mosq_ocsp.c ../lib-broker/net_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-net_mosq.o : ../lib/net_mosq.c ../lib/net_mosq.h
+net_mosq.o : ../lib-broker/net_mosq.c ../lib-broker/net_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 password_mosq.o : password_mosq.c password_mosq.h mosquitto_broker_internal.h
@@ -204,16 +208,16 @@ persist_write.o : persist_write.c persist.h mosquitto_broker_internal.h
 persist_write_v5.o : persist_write_v5.c persist.h mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-packet_datatypes.o : ../lib/packet_datatypes.c ../lib/packet_mosq.h
+packet_datatypes.o : ../lib-broker/packet_datatypes.c ../lib-broker/packet_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-packet_mosq.o : ../lib/packet_mosq.c ../lib/packet_mosq.h
+packet_mosq.o : ../lib-broker/packet_mosq.c ../lib-broker/packet_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 property_broker.o : property_broker.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-property_mosq.o : ../lib/property_mosq.c ../lib/property_mosq.h
+property_mosq.o : ../lib-broker/property_mosq.c ../lib-broker/property_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 plugin.o : plugin.c ../include/mosquitto_plugin.h mosquitto_broker_internal.h
@@ -237,31 +241,31 @@ security_default.o : security_default.c mosquitto_broker_internal.h
 send_auth.o : send_auth.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_connect.o : ../lib/send_connect.c ../lib/send_mosq.h
+send_connect.o : ../lib-broker/send_connect.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_disconnect.o : ../lib/send_disconnect.c ../lib/send_mosq.h
+send_disconnect.o : ../lib-broker/send_disconnect.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 send_connack.o : send_connack.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_mosq.o : ../lib/send_mosq.c ../lib/send_mosq.h
+send_mosq.o : ../lib-broker/send_mosq.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_publish.o : ../lib/send_publish.c ../lib/send_mosq.h
+send_publish.o : ../lib-broker/send_publish.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 send_suback.o : send_suback.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_subscribe.o : ../lib/send_subscribe.c ../lib/send_mosq.h
+send_subscribe.o : ../lib-broker/send_subscribe.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 send_unsuback.o : send_unsuback.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-send_unsubscribe.o : ../lib/send_unsubscribe.c ../lib/send_mosq.h
+send_unsubscribe.o : ../lib-broker/send_unsubscribe.c ../lib-broker/send_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 service.o : service.c mosquitto_broker_internal.h
@@ -273,7 +277,7 @@ session_expiry.o : session_expiry.c mosquitto_broker_internal.h
 signals.o : signals.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-strings_mosq.o : ../lib/strings_mosq.c mosquitto_broker_internal.h
+strings_mosq.o : ../lib-broker/strings_mosq.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 subs.o : subs.c mosquitto_broker_internal.h
@@ -282,22 +286,22 @@ subs.o : subs.c mosquitto_broker_internal.h
 sys_tree.o : sys_tree.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-time_mosq.o : ../lib/time_mosq.c ../lib/time_mosq.h
+time_mosq.o : ../lib-broker/time_mosq.c ../lib-broker/time_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-tls_mosq.o : ../lib/tls_mosq.c
+tls_mosq.o : ../lib-broker/tls_mosq.c
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 topic_tok.o : topic_tok.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-util_mosq.o : ../lib/util_mosq.c ../lib/util_mosq.h
+util_mosq.o : ../lib-broker/util_mosq.c ../lib-broker/util_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-util_topic.o : ../lib/util_topic.c ../lib/util_mosq.h
+util_topic.o : ../lib-broker/util_topic.c ../lib-broker/util_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-utf8_mosq.o : ../lib/utf8_mosq.c
+utf8_mosq.o : ../lib-broker/utf8_mosq.c
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 websockets.o : websockets.c mosquitto_broker_internal.h
@@ -306,7 +310,7 @@ websockets.o : websockets.c mosquitto_broker_internal.h
 will_delay.o : will_delay.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
-will_mosq.o : ../lib/will_mosq.c ../lib/will_mosq.h
+will_mosq.o : ../lib-broker/will_mosq.c ../lib-broker/will_mosq.h
 	${CROSS_COMPILE}${CXX} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 xtreport.o : xtreport.c

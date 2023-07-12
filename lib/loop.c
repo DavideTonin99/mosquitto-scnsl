@@ -16,12 +16,15 @@ Contributors:
    Roger Light - initial implementation and documentation.
 */
 
-#include "config.h"
+#include "../config.h"
 
-#ifndef WIN32
+#include <scnsl.hh>
+#include <systemc>
 #include <scnsl/system_calls/NetworkSyscalls.hh>
+#include <scnsl/system_calls/TimedSyscalls.hh>
+
 using namespace Scnsl::Syscalls;
-#endif
+#define fd_set Scnsl::Syscalls::fd_set
 
 #include "mosquitto.h"
 #include "mosquitto_internal.h"
@@ -31,9 +34,9 @@ using namespace Scnsl::Syscalls;
 #include "tls_mosq.h"
 #include "util_mosq.h"
 
-#if !defined(WIN32) && !defined(__SYMBIAN32__) && !defined(__QNX__)
-#define HAVE_PSELECT
-#endif
+// #if !defined(WIN32) && !defined(__SYMBIAN32__) && !defined(__QNX__)
+// #define HAVE_PSELECT
+// #endif
 
 int mosquitto_loop(struct mosquitto *mosq, int timeout, int max_packets)
 {
@@ -144,7 +147,7 @@ int mosquitto_loop(struct mosquitto *mosq, int timeout, int max_packets)
 			}
 			if(mosq->sockpairR != INVALID_SOCKET && FD_ISSET(mosq->sockpairR, &readfds)){
 #ifndef WIN32
-				if(read(mosq->sockpairR, &pairbuf, 1) == 0){
+				if(Scnsl::Syscalls::read(mosq->sockpairR, &pairbuf, 1) == 0){
 				}
 #else
 				recv(mosq->sockpairR, &pairbuf, 1, 0);
@@ -185,7 +188,7 @@ static int interruptible_sleep(struct mosquitto *mosq, time_t reconnect_delay)
 	int maxfd = 0;
 
 #ifndef WIN32
-	while(mosq->sockpairR != INVALID_SOCKET && read(mosq->sockpairR, &pairbuf, 1) > 0);
+	while(mosq->sockpairR != INVALID_SOCKET && Scnsl::Syscalls::read(mosq->sockpairR, &pairbuf, 1) > 0);
 #else
 	while(mosq->sockpairR != INVALID_SOCKET && recv(mosq->sockpairR, &pairbuf, 1, 0) > 0);
 #endif
@@ -220,7 +223,7 @@ static int interruptible_sleep(struct mosquitto *mosq, time_t reconnect_delay)
 		}
 	}else if(mosq->sockpairR != INVALID_SOCKET && FD_ISSET(mosq->sockpairR, &readfds)){
 #ifndef WIN32
-		if(read(mosq->sockpairR, &pairbuf, 1) == 0){
+		if(Scnsl::Syscalls::read(mosq->sockpairR, &pairbuf, 1) == 0){
 		}
 #else
 		recv(mosq->sockpairR, &pairbuf, 1, 0);
@@ -242,7 +245,6 @@ int mosquitto_loop_forever(struct mosquitto *mosq, int timeout, int max_packets)
 
 	while(run){
 		do{
-#endif
 			rc = mosquitto_loop(mosq, timeout, max_packets);
 		}while(run && rc == MOSQ_ERR_SUCCESS);
 		/* Quit after fatal errors. */
@@ -267,7 +269,6 @@ int mosquitto_loop_forever(struct mosquitto *mosq, int timeout, int max_packets)
 			return rc;
 		}
 		do{
-#endif
 			rc = MOSQ_ERR_SUCCESS;
 			if(mosquitto__get_request_disconnect(mosq)){
 				run = 0;
@@ -382,4 +383,3 @@ int mosquitto_loop_write(struct mosquitto *mosq, int max_packets)
 	}
 	return rc;
 }
-

@@ -82,7 +82,7 @@ WITH_SOCKS:=no
 WITH_STRIP:=no
 
 # Build static libraries
-WITH_STATIC_LIBRARIES:=no
+WITH_STATIC_LIBRARIES:=yes
 
 # Use this variable to add extra library dependencies when building the clients
 # with the static libmosquitto library. This may be required on some systems
@@ -159,6 +159,9 @@ APP_CFLAGS=$(CFLAGS) -DVERSION=\""${VERSION}\""
 APP_LDFLAGS:=$(LDFLAGS)
 
 LIB_CPPFLAGS=$(CPPFLAGS) -std=c++17 -I. -I.. -I../include -I../../include
+ifeq ($(WITH_BROKER),yes)
+	LIB_CPPFLAGS=$(CPPFLAGS) -std=c++17 -DWITH_BROKER -Lscnsl -I. -I.. -I../include -I../../include
+endif
 LIB_CFLAGS:=$(CFLAGS)
 LIB_CXXFLAGS:=$(CXXFLAGS)
 LIB_LDFLAGS:=$(LDFLAGS)

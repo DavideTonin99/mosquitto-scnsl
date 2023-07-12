@@ -30,13 +30,13 @@ Contributors:
 #  endif
 #endif
 
-#include "mosquitto_internal.h"
+#include "../lib-broker/mosquitto_internal.h"
 #include "mosquitto_broker.h"
 #include "mosquitto_plugin.h"
 #include "mosquitto.h"
-#include "logging_mosq.h"
+#include "../lib-broker/logging_mosq.h"
 #include "password_mosq.h"
-#include "tls_mosq.h"
+#include "../lib-broker/tls_mosq.h"
 #include "uthash.h"
 
 #ifndef __GNUC__

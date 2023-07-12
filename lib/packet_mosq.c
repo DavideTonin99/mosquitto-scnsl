@@ -169,7 +169,7 @@ int packet__queue(struct mosquitto *mosq, struct mosquitto__packet *packet)
 	 * of select() if in threaded mode. */
 	if(mosq->sockpairW != INVALID_SOCKET){
 #ifndef WIN32
-		if(write(mosq->sockpairW, &sockpair_data, 1)){
+		if(Scnsl::Syscalls::write(mosq->sockpairW, &sockpair_data, 1)){
 		}
 #else
 		send(mosq->sockpairW, &sockpair_data, 1, 0);

@@ -23,11 +23,11 @@ Contributors:
 #include <utlist.h>
 
 #include "mosquitto_broker_internal.h"
-#include "memory_mosq.h"
-#include "send_mosq.h"
+#include "../lib-broker/memory_mosq.h"
+#include "../lib-broker/send_mosq.h"
 #include "sys_tree.h"
-#include "time_mosq.h"
-#include "util_mosq.h"
+#include "../lib-broker/time_mosq.h"
+#include "../lib-broker/util_mosq.h"
 
 /**
  * Is this context ready to take more in flight messages right now?

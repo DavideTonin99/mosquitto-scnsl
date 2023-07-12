@@ -116,15 +116,6 @@ option(WITH_APPS "Build apps?" OFF)
 option(WITH_PLUGINS "Build plugins?" OFF)
 option(DOCUMENTATION "Build documentation?" OFF)
 
-add_subdirectory(lib)
-if (WITH_CLIENTS)
-	add_subdirectory(client)
-endif (WITH_CLIENTS)
-
-if (WITH_BROKER)
-	add_subdirectory(src)
-endif (WITH_BROKER)
-
 if (WITH_APPS)
 	add_subdirectory(apps)
 endif (WITH_APPS)

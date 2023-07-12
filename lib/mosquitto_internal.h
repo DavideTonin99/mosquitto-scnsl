@@ -44,11 +44,13 @@ typedef int mosq_sock_t;
 
 #define SAFE_PRINT(A) (A)?(A):"null"
 
+#include <scnsl.hh>
+#include <systemc>
 #include <scnsl/system_calls/NetworkSyscalls.hh>
 #include <scnsl/system_calls/TimedSyscalls.hh>
+
 using namespace Scnsl::Syscalls;
 #define fd_set Scnsl::Syscalls::fd_set
-
 
 enum mosquitto_msg_direction {
 	mosq_md_in = 0,
@@ -331,4 +333,3 @@ struct mosquitto {
 void do_client_disconnect(struct mosquitto *mosq, int reason_code, const mosquitto_property *properties);
 
 #endif
-

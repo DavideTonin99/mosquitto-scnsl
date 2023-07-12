@@ -1,11 +1,10 @@
 include config.mk
 
-DIRS=lib client plugins src
+DIRS=lib src plugins
 DOCDIRS=man
 DISTDIRS=man
 DISTFILES= \
 	apps/ \
-	client/ \
 	cmake/ \
 	deps/ \
 	examples/ \
@@ -92,18 +91,9 @@ install : all
 ifeq ($(WITH_DOCS),yes)
 	set -e; for d in ${DOCDIRS}; do $(MAKE) -C $${d} install; done
 endif
-	$(INSTALL) -d "${DESTDIR}/etc/mosquitto"
-	$(INSTALL) -m 644 mosquitto.conf "${DESTDIR}/etc/mosquitto/mosquitto.conf.example"
-	$(INSTALL) -m 644 aclfile.example "${DESTDIR}/etc/mosquitto/aclfile.example"
-	$(INSTALL) -m 644 pwfile.example "${DESTDIR}/etc/mosquitto/pwfile.example"
-	$(INSTALL) -m 644 pskfile.example "${DESTDIR}/etc/mosquitto/pskfile.example"
 
 uninstall :
 	set -e; for d in ${DIRS}; do $(MAKE) -C $${d} uninstall; done
-	rm -f "${DESTDIR}/etc/mosquitto/mosquitto.conf.example"
-	rm -f "${DESTDIR}/etc/mosquitto/aclfile.example"
-	rm -f "${DESTDIR}/etc/mosquitto/pwfile.example"
-	rm -f "${DESTDIR}/etc/mosquitto/pskfile.example"
 
 dist : reallyclean
 	set -e; for d in ${DISTDIRS}; do $(MAKE) -C $${d} dist; done
@@ -131,4 +121,3 @@ localdocker : reallyclean
 	cp dockertmp/mosq.tar.gz docker/local
 	rm -rf dockertmp/
 	cd docker/local && docker build . -t eclipse-mosquitto:local
-

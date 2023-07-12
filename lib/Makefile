@@ -62,29 +62,29 @@ ifeq ($(WITH_SHARED_LIBRARIES),yes)
 endif
 
 install : all
-	$(INSTALL) -d "${DESTDIR}${libdir}/"
+	$(INSTALL) -d "./lib-scnsl/"
 ifeq ($(WITH_SHARED_LIBRARIES),yes)
-	$(INSTALL) ${STRIP_OPTS} libmosquitto.so.${SOVERSION} "${DESTDIR}${libdir}/libmosquitto.so.${SOVERSION}"
-	ln -sf libmosquitto.so.${SOVERSION} "${DESTDIR}${libdir}/libmosquitto.so"
+	$(INSTALL) ${STRIP_OPTS} libmosquitto.so.${SOVERSION} "./lib-scnsl/libmosquitto.so.${SOVERSION}"
+	ln -sf libmosquitto.so.${SOVERSION} "./lib-scnsl/libmosquitto.so"
 endif
 ifeq ($(WITH_STATIC_LIBRARIES),yes)
-	$(INSTALL) ${STRIP_OPTS} libmosquitto.a "${DESTDIR}${libdir}/libmosquitto.a"
+	$(INSTALL) ${STRIP_OPTS} libmosquitto.a "./lib-scnsl/libmosquitto.a"
 endif
-	$(INSTALL) -d "${DESTDIR}${incdir}/"
-	$(INSTALL) ../include/mosquitto.h "${DESTDIR}${incdir}/mosquitto.h"
-	$(INSTALL) ../include/mqtt_protocol.h "${DESTDIR}${incdir}/mqtt_protocol.h"
-	$(INSTALL) -d "${DESTDIR}${libdir}/pkgconfig"
-	$(INSTALL) -m644 ../libmosquitto.pc.in "${DESTDIR}${libdir}/pkgconfig/libmosquitto.pc"
-	sed ${SEDINPLACE} -e "s#@CMAKE_INSTALL_PREFIX@#${prefix}#" -e "s#@VERSION@#${VERSION}#" "${DESTDIR}${libdir}/pkgconfig/libmosquitto.pc"
+	$(INSTALL) -d "./inc-scnsl/"
+	$(INSTALL) ../include/mosquitto.h "./inc-scnsl/mosquitto.h"
+	$(INSTALL) ../include/mqtt_protocol.h "./inc-scnsl/mqtt_protocol.h"
+	$(INSTALL) -d "./lib-scnsl/pkgconfig"
+	$(INSTALL) -m644 ../libmosquitto.pc.in "./lib-scnsl/pkgconfig/libmosquitto.pc"
+	sed ${SEDINPLACE} -e "s#@CMAKE_INSTALL_PREFIX@#${prefix}#" -e "s#@VERSION@#${VERSION}#" "./lib-scnsl/pkgconfig/libmosquitto.pc"
 ifeq ($(WITH_SHARED_LIBRARIES),yes)
 	$(MAKE) -C cpp install
 endif
 
 uninstall :
-	-rm -f "${DESTDIR}${libdir}/libmosquitto.so.${SOVERSION}"
-	-rm -f "${DESTDIR}${libdir}/libmosquitto.so"
-	-rm -f "${DESTDIR}${libdir}/libmosquitto.a"
-	-rm -f "${DESTDIR}${incdir}/mosquitto.h"
+	-rm -f "./lib-scnsl/libmosquitto.so.${SOVERSION}"
+	-rm -f "./lib-scnsl/libmosquitto.so"
+	-rm -f "./lib-scnsl/libmosquitto.a"
+	-rm -f "./lib-scnsl/mosquitto.h"
 
 reallyclean : clean
 
@@ -226,4 +226,3 @@ util_topic.o : util_topic.c util_mosq.h
 
 will_mosq.o : will_mosq.c will_mosq.h
 	${CROSS_COMPILE}$(CXX) $(LIB_CPPFLAGS) $(LIB_CFLAGS) -c $< -o $@
-

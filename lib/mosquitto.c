@@ -58,7 +58,7 @@ int mosquitto_lib_init(void)
 #elif _POSIX_TIMERS>0 && defined(_POSIX_MONOTONIC_CLOCK)
 		struct timespec tp;
 
-		clock_gettime(CLOCK_MONOTONIC, &tp);
+		Scnsl::Syscalls::clock_gettime(CLOCK_MONOTONIC, &tp);
 		srand((unsigned int)tp.tv_nsec);
 #elif defined(__APPLE__)
 		uint64_t ticks;
@@ -362,4 +362,3 @@ int mosquitto_sub_topic_tokens_free(char ***topics, int count)
 
 	return MOSQ_ERR_SUCCESS;
 }
-
